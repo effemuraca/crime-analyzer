@@ -3,6 +3,14 @@
 ## dataset
 - https://www.kaggle.com/c/zillow-prize-1
 
+## pois
+- https://www.openstreetmap.org/#map=9/34.219/-118.707
+
+## crimes
+- https://data.lacity.org/Public-Safety/Crime-Data-from-2010-to-2019/63jg-8b9z/about_data
+- ORANGE COUNTY
+- VENTURA COUNTY
+
 ## papers
 - https://scholarworks.calstate.edu/downloads/3197xr874
 - https://ieeexplore.ieee.org/abstract/document/8108793
