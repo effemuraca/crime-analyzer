@@ -92,32 +92,28 @@ This document provides a structured index for each notebook in the General folde
 ### Sections:
 1. **Setup**
    - Mount Google Drive
-   - Import base libraries
+   - Import base libraries (pandas, numpy, os, warnings)
    - Define cleaned data paths
 
 2. **Load Cleaned Data**
    - Load cleaned crime dataset
-   - Load POI (Points of Interest) dataset
-   - Verify data integrity
+   - Perform basic data validation
+   - Display dataset overview and statistics
 
-3. **POI Data Processing**
-   - Clean POI data (bars, ATMs, metro, schools, etc.)
-   - Standardize coordinates
-   - Categorize POI
+3. **Data Integration – Enrichment with OpenStreetMap POI**
+   - Construction of spatial grid and POI extraction from OSM
+   - Spatial feature generation (distance and density features)
+   - Integration with bars, nightclubs, ATMs, metro stations, schools
 
-4. **Spatial Integration**
-   - Calculate distances from POI
-   - Create proximity features
-   - Spatial aggregations
+4. **Data Processing and Feature Engineering**
+   - Intelligent column detection and validation
+   - Basic feature engineering (distance aggregations, density metrics)
+   - Safe column standardization and data validation
 
-5. **Data Enrichment**
-   - Add features derived from integration
-   - Validate new features
-   - Integration quality control
-
-6. **Export Integrated Data**
-   - Save integrated dataset
-   - Document new features
+5. **Export Integrated Data**
+   - Final validation and quality checks
+   - Save cleaned integrated dataset
+   - Create processing log and documentation
 
 ---
 
