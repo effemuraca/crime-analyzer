@@ -59,9 +59,6 @@ def cyclical_transform(X: pd.DataFrame) -> pd.DataFrame:
         TypeError: If input is not a pandas DataFrame.
         ValueError: If a column in X is not 'HOUR', 'WEEKDAY', or 'MONTH'.
     """
-    if not isinstance(X, pd.DataFrame):
-        raise TypeError(f"cyclical_transform: input must be a pandas DataFrame. Got {type(X)}.")
-
     X_transformed = pd.DataFrame(index=X.index)
     feature_names_out = [] # To store new column names
 
@@ -72,32 +69,41 @@ def cyclical_transform(X: pd.DataFrame) -> pd.DataFrame:
     for col in X.columns:
         col_out_sin = f'{col}_SIN'
         col_out_cos = f'{col}_COS'
-        feature_names_out.extend([col_out_sin, col_out_cos])
+        feature_names_out += [col_out_sin, col_out_cos]
 
         if col == 'HOUR':
-            num_val = X[col]
-            period = 24.0
+            num_val = pd.to_numeric(X[col], errors='raise')
+            period  = 24.0
+            valid_range = (0, period-1)
         elif col == 'WEEKDAY':
-            # Ensure weekday column is mapped to numerical values if it's string
             if X[col].dtype == 'object' or pd.api.types.is_categorical_dtype(X[col]):
                 num_val = X[col].map(weekday_map)
                 if num_val.isnull().any():
-                    raise ValueError(f"Column '{col}' contains values not in weekday_map: {X[col][num_val.isnull()].unique()}")
-            else: # Assume already numerical (0-6)
-                num_val = X[col]
+                    bad = X[col][num_val.isnull()].unique()
+                    raise ValueError(f"WEEKDAY contains invalid values: {bad}")
+            else:
+                num_val = pd.to_numeric(X[col], errors='raise')
             period = 7.0
+            valid_range = (0, period-1)
         elif col == 'MONTH':
-            num_val = X[col] # Assuming month is 1-12
-            period = 12.0
+            num_val = pd.to_numeric(X[col], errors='raise')
+            period  = 12.0
+            # If you ever get month names, map them here with a month_map.
+            valid_range = (1, period)
         else:
-            raise ValueError(f"Unknown column for cyclical transform: {col}. Expected 'HOUR', 'WEEKDAY', or 'MONTH'.")
+            raise ValueError(f"Unknown cyclical column: {col}")
 
-        # Apply sin/cos transformation
+        # 2. Range check
+        if not ((num_val >= valid_range[0]) & (num_val <= valid_range[1])).all():
+            raise ValueError(
+                f"Values of '{col}' must be in [{valid_range[0]}, {valid_range[1]}], "
+                f"found {num_val.min()}–{num_val.max()}"
+            )
+
         X_transformed[col_out_sin] = np.sin(2 * np.pi * num_val / period)
         X_transformed[col_out_cos] = np.cos(2 * np.pi * num_val / period)
 
-    # Set feature names for the transformer output
-    X_transformed.columns = feature_names_out # type: ignore
+    X_transformed.columns = feature_names_out  # type: ignore
     return X_transformed
 
 class BinarizeSinCosTransformer(BaseEstimator, TransformerMixin):
