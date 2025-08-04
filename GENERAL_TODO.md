@@ -1,1 +1,2 @@
-- Correggere i percorsi dei notebook
+- Riguardare tutti gli md all'interno dei jupyter notebook
+- Rimuovere il codice inutile
