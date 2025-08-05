@@ -11,6 +11,7 @@ from sklearn.neighbors import KDTree
 from pyproj import Transformer
 import numpy as np
 import pandas as pd
+from sklearn.model_selection import BaseCrossValidator
 import jenkspy
 
 # Set up logging for performance monitoring
@@ -639,3 +640,47 @@ def cyclical_transform(X):
         X_transformed[col_out_cos] = np.cos(2 * np.pi * num_val / period)
 
     return X_transformed
+
+
+class SlidingWindowSplit(BaseCrossValidator):
+    """
+    Cross-validator for time series data that uses a sliding window approach.
+    
+    In each split, the training set is a fixed-size window that "slides"
+    forward in time, and the test set is the block of data immediately
+    following the training set.
+    
+    This is useful for models where only recent history is relevant (concept drift).
+    """
+    def __init__(self, n_splits=5, train_size=None, test_size=None):
+        self.n_splits = n_splits
+        self.train_size = train_size
+        self.test_size = test_size
+
+    def get_n_splits(self, X=None, y=None, groups=None):
+        return self.n_splits
+
+    def split(self, X, y=None, groups=None):
+        n_samples = len(X)
+        if self.train_size is None or self.test_size is None:
+            raise ValueError("train_size and test_size must be specified")
+        
+        if self.train_size + self.test_size * self.n_splits > n_samples:
+            raise ValueError("train_size and test_size are too large for the number of samples and splits.")
+        
+        # Start index of the first test fold
+        start_test = n_samples - (self.n_splits * self.test_size)
+        
+        for i in range(self.n_splits):
+            test_start_idx = start_test + i * self.test_size
+            train_end_idx = test_start_idx
+            train_start_idx = train_end_idx - self.train_size
+            
+            if train_start_idx < 0:
+                raise ValueError(f"train_start_idx is negative ({train_start_idx}) on fold {i}. "
+                                 "Reduce train_size, test_size, or n_splits.")
+
+            yield (
+                np.arange(train_start_idx, train_end_idx),
+                np.arange(test_start_idx, test_start_idx + self.test_size)
+            )
