@@ -45,54 +45,6 @@ def apply_fixed_thresholds_to_intensities(intensities: Union[pd.Series, np.ndarr
     # If thresholds is empty, all intensities will be in class 0.
     return np.digitize(intensities, bins=list(thresholds), right=True)
 
-
-class BinarizeSinCosTransformer(BaseEstimator, TransformerMixin):
-    """
-    Transformer that binarizes sin/cos cyclical features based on a threshold.
-    
-    Parameters:
-        threshold: Threshold value for binarization (default: 0.0).
-    """
-    def __init__(self, threshold: float = 0.0) -> None:
-        self.threshold = threshold
-
-    def fit(self, X: pd.DataFrame, y: Optional[np.ndarray] = None) -> 'BinarizeSinCosTransformer':
-        """
-        Fit the transformer and store feature names.
-        
-        Args:
-            X: Input DataFrame.
-            y: Target values (ignored).
-            
-        Returns:
-            Self for method chaining.
-        """
-        # Store feature names if X is a DataFrame, for get_feature_names_out
-        if isinstance(X, pd.DataFrame):
-            self.feature_names_in_ = X.columns.tolist()
-        return self
-
-    def transform(self, X: pd.DataFrame, y: Optional[np.ndarray] = None) -> pd.DataFrame:
-        # No fitted state required; simply binarize sin/cos columns
-        X_transformed = X.copy()
-        # The input X to this transformer will be the output of the ColumnTransformer's 'cyc_passthrough' part
-        # which contains the sin/cos transformed columns.
-        # Only binarize sin/cos columns
-        for col in X_transformed.columns:
-            if '_SIN' in col or '_COS' in col:
-                X_transformed[col] = (X_transformed[col] > self.threshold).astype(int)
-        return X_transformed
-
-    def get_feature_names_out(self, input_features: Optional[List[str]] = None) -> List[str]:
-        if input_features is None:
-            if hasattr(self, 'feature_names_in_'):
-                input_features = self.feature_names_in_
-            else:
-                # Fallback for when fit wasn't called on a DataFrame
-                raise ValueError("Cannot determine output feature names without input_features.")
-        # The transformer modifies columns in place, so names don't change.
-        return list(input_features)
-    
 class STKDEAndRiskLabelTransformer(BaseEstimator, TransformerMixin):
     """
     Computes STKDE intensity and derives a risk label based on dynamic or fixed thresholds.
@@ -489,93 +441,6 @@ class TargetEngineeringPipeline(BaseEstimator, TransformerMixin):
             if hasattr(self, name) and getattr(self, name) is not None:
                 getattr(self, name).set_params(**p)
 
-
-class CustomModelPipeline(BaseEstimator, ClassifierMixin, MetaEstimatorMixin):
-    """
-    A complete modeling pipeline that combines STKDE transformation, feature processing, and classification.
-    """
-    def __init__(self, stkde_transformer: Optional[STKDEAndRiskLabelTransformer] = None, 
-                 feature_processor: Optional[Pipeline] = None, 
-                 classifier: Optional[ClassifierMixin] = None) -> None:
-        self.stkde_transformer = stkde_transformer
-        self.feature_processor = feature_processor
-        self.classifier = classifier
-
-    def fit(self, X: pd.DataFrame, y: Optional[np.ndarray] = None) -> 'CustomModelPipeline':
-        """Fit the complete pipeline."""
-        if self.stkde_transformer is None or self.feature_processor is None or self.classifier is None:
-            raise ValueError("All components (stkde_transformer, feature_processor, classifier) must be provided")
-        
-        X_aug, y_engineered = self.stkde_transformer.fit_transform(X.copy(), y)
-        X_processed = self.feature_processor.fit_transform(X_aug, y_engineered)
-        self.classifier.fit(X_processed, y_engineered)
-        self.fitted_ = True
-        return self
-
-    def predict(self, X: pd.DataFrame) -> np.ndarray:
-        check_is_fitted(self)
-        X_aug, _ = self.stkde_transformer.transform(X.copy())
-        X_processed = self.feature_processor.transform(X_aug)
-        return self.classifier.predict(X_processed)
-
-    def predict_proba(self, X: pd.DataFrame) -> np.ndarray:
-        """Predict class probabilities."""
-        check_is_fitted(self)
-        if not hasattr(self.classifier, 'predict_proba'):
-            raise AttributeError("The classifier does not support probability prediction")
-        X_aug, _ = self.stkde_transformer.transform(X.copy())
-        X_processed = self.feature_processor.transform(X_aug)
-        return self.classifier.predict_proba(X_processed)
-
-    def get_params(self, deep: bool = True) -> Dict[str, Any]:
-        params = super().get_params(deep=False)
-        if deep:
-            for name in ['stkde_transformer', 'feature_processor', 'classifier']:
-                estimator = getattr(self, name)
-                if estimator is not None:
-                    for key, value in estimator.get_params(deep=True).items():
-                        params[f'{name}__{key}'] = value
-        return params
-
-    def set_params(self, **params) -> 'CustomModelPipeline':
-        my_params = {}
-        nested_params = {name: {} for name in ['stkde_transformer', 'feature_processor', 'classifier']}
-        
-        for key, value in params.items():
-            if '__' in key:
-                estimator_name, param_name = key.split('__', 1)
-                if estimator_name in nested_params:
-                    nested_params[estimator_name][param_name] = value
-                else:
-                    my_params[key] = value
-            else:
-                my_params[key] = value
-
-        super().set_params(**my_params)
-        
-        for name, p in nested_params.items():
-            if hasattr(self, name) and getattr(self, name) is not None:
-                getattr(self, name).set_params(**p)
-        return self
-
-    def get_selected_features_mask(self) -> Optional[np.ndarray]:
-        """Helper to get selected features if RFE is used in the classifier or feature_processor."""
-        if hasattr(self.classifier, 'feature_importances_'):
-            return self.classifier.feature_importances_ > 0
-        if hasattr(self.classifier, 'coef_'):
-            return np.sum(np.abs(self.classifier.coef_), axis=0) > 0
-        return None
-
-    @property
-    def feature_importances_(self) -> Optional[np.ndarray]:
-        """Access feature importances from the classifier if available."""
-        return getattr(self.classifier, 'feature_importances_', None)
-
-    @property
-    def coef_(self) -> Optional[np.ndarray]:
-        """Access coefficients from the classifier if available."""
-        return getattr(self.classifier, 'coef_', None)
-
 def cyclical_transform(X):
     """
     Encodes cyclical features using sine and cosine transforms.
@@ -641,7 +506,20 @@ def cyclical_transform(X):
 
     return X_transformed
 
-
+class CyclicalTransformer(BaseEstimator, TransformerMixin):
+    def fit(self, X, y=None):
+        self.feature_names_in_ = X.columns.tolist()
+        return self
+    def transform(self, X, y=None):
+        return cyclical_transform(X)
+    def get_feature_names_out(self, input_features=None):
+        if input_features is None:
+            input_features = self.feature_names_in_
+        out = []
+        for col in input_features:
+            out += [f"{col}_SIN", f"{col}_COS"]
+        return out
+    
 class SlidingWindowSplit(BaseCrossValidator):
     """
     Cross-validator for time series data that uses a sliding window approach.
