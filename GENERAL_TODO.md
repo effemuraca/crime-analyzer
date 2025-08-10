@@ -1,3 +1,4 @@
 - Riguardare tutti gli md all'interno dei jupyter notebook
 - Rimuovere il codice inutile
 - Scrivere il confronto con la baseline / con lo state of the art
+- Aggiungere F2 score alle metriche finali
