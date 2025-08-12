@@ -2,3 +2,6 @@
 - Rimuovere il codice inutile
 - Scrivere il confronto con la baseline / con lo state of the art
 - Aggiungere F2 score alle metriche finali
+- Rimuovere la parte finale di feature eng
+- aggiungere t test o wilcoxon
+- riguardare la parte di interpretabilità dei modelli
