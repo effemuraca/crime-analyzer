@@ -1,2 +1,3 @@
 - Riguardare tutti gli md all'interno dei jupyter notebook
 - Rimuovere il codice inutile
+- inserire waterfall plot per shap
