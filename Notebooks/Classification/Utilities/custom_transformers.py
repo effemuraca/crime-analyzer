@@ -22,18 +22,6 @@ def apply_fixed_thresholds_to_intensities(intensities: Union[pd.Series, np.ndarr
     """
     Applies fixed thresholds to intensity values to create labels.
     Labels are 0, 1, 2, ..., len(thresholds).
-    
-    Args:
-        intensities: The STKDE intensity values.
-        thresholds: A list of N-1 threshold values, sorted ascending,
-                   to create N classes.
-                   
-
-    Returns:
-        The generated integer labels.
-        
-    Raises:
-        ValueError: If thresholds are invalid or not sorted.
     """
     if not isinstance(thresholds, (list, tuple, np.ndarray)) or not all(isinstance(t, (int, float, np.integer, np.floating)) for t in np.array(thresholds).flatten()):
         raise ValueError("Thresholds must be a list, tuple, or numpy array of numbers.")
@@ -47,12 +35,7 @@ def apply_fixed_thresholds_to_intensities(intensities: Union[pd.Series, np.ndarr
 
 class STKDEAndRiskLabelTransformer(BaseEstimator, TransformerMixin):
     """
-    Computes STKDE intensity and derives a risk label based on dynamic or fixed thresholds.
-    Supports multiple threshold strategies to prevent data leakage during cross-validation:
-    - 'fixed': Use predefined thresholds (may cause data leakage if computed from full dataset)
-    - 'dynamic_jenks': Calculate Jenks natural breaks on training fold intensities
-    - 'dynamic_quantile': Use quantile-based thresholds on training fold intensities  
-    - 'dynamic_median': Use median-based threshold on training fold intensities
+    Computes STKDE intensity and derives a risk label based on dynamic Jenks thresholds.
     """
     
     def __init__(self, year_col: str = 'YEAR', month_col: str = 'MONTH', 
@@ -87,23 +70,6 @@ class STKDEAndRiskLabelTransformer(BaseEstimator, TransformerMixin):
         self.n_classes_init_ = n_classes
         self.n_classes_eff_ = n_classes
 
-        # Validate threshold strategy and fixed_thresholds
-        if threshold_strategy == 'fixed':
-            if fixed_thresholds is None:
-                raise ValueError("fixed_thresholds must be provided when threshold_strategy is 'fixed'.")
-            if not isinstance(fixed_thresholds, (list, tuple)) or not all(isinstance(t, (int, float)) for t in fixed_thresholds):
-                raise ValueError("fixed_thresholds must be a list or tuple of numbers.")
-            if len(fixed_thresholds) != n_classes - 1:
-                raise ValueError(f"For {n_classes} classes, expected {n_classes - 1} thresholds, but got {len(fixed_thresholds)}.")
-        elif threshold_strategy not in ['dynamic_jenks', 'dynamic_quantile', 'dynamic_median']:
-            raise ValueError(f"Invalid threshold_strategy: {threshold_strategy}")
-        
-        if threshold_strategy != 'fixed' and fixed_thresholds is not None:
-            warnings.warn("fixed_thresholds is ignored when threshold_strategy is not 'fixed'.")
-        
-        self.fixed_thresholds = fixed_thresholds
-        self.calculated_thresholds_: Optional[np.ndarray] = None
-
         # Attributes to be learned during fit
         self.train_reference_coords_rad_: Optional[np.ndarray] = None
         self.train_reference_datetime_np_: Optional[np.ndarray] = None
@@ -115,31 +81,11 @@ class STKDEAndRiskLabelTransformer(BaseEstimator, TransformerMixin):
         Calculate dynamic thresholds based on the specified strategy.
         """
         if self.threshold_strategy == 'dynamic_jenks':
-            try:
-                import jenkspy
-                # n_classes-1 thresholds are needed. jenks_breaks returns n_classes+1 values (min, thresholds..., max)
-                breaks = jenkspy.jenks_breaks(intensities, n_classes=self.n_classes_init_)
-                return np.array(breaks[1:-1])
-            except ImportError:
-                warnings.warn("jenkspy library not found. Please install it for 'dynamic_jenks' strategy. Falling back to 'dynamic_quantile'.")
-                return self._calculate_quantile_thresholds(intensities)
-        elif self.threshold_strategy == 'dynamic_quantile':
-            return self._calculate_quantile_thresholds(intensities)
-        elif self.threshold_strategy == 'dynamic_median':
-            return self._calculate_median_thresholds(intensities)
+            # n_classes-1 thresholds are needed. jenks_breaks returns n_classes+1 values (min, thresholds..., max)
+            breaks = jenkspy.jenks_breaks(intensities, n_classes=self.n_classes_init_)
+            return np.array(breaks[1:-1])
         else: # Should not be reached due to __init__ validation
             raise ValueError(f"Invalid threshold strategy: {self.threshold_strategy}")
-    
-    def _calculate_quantile_thresholds(self, intensities: np.ndarray) -> np.ndarray:
-        """Calculate quantile-based thresholds."""
-        quantiles = np.linspace(0, 1, self.n_classes_init_ + 1)[1:-1]  # Exclude 0 and 1
-        return np.quantile(intensities, quantiles)
-    
-    def _calculate_median_thresholds(self, intensities: np.ndarray) -> np.ndarray:
-        """Calculate median-based threshold (only works for 2 classes)."""
-        if self.n_classes_init_ != 2:
-            raise ValueError("Median thresholding is only supported for n_classes=2.")
-        return np.array([np.median(intensities)])
 
     def _prepare_data_for_stkde(self, X_df: pd.DataFrame) -> Tuple[pd.DataFrame, Optional[np.ndarray], Optional[np.ndarray]]:
         """Helper to prepare datetime and coordinates from an input DataFrame X_df."""
@@ -284,10 +230,8 @@ class STKDEAndRiskLabelTransformer(BaseEstimator, TransformerMixin):
         if stkde_intensities_train.size == 0 or np.all(stkde_intensities_train == 0):
              warnings.warn("STKDE intensities for training data are all zero. Thresholds may not be meaningful.")
 
-        if self.threshold_strategy == 'fixed':
-            self.calculated_thresholds_ = np.array(self.fixed_thresholds)
-        else:
-            self.calculated_thresholds_ = self._calculate_dynamic_thresholds(stkde_intensities_train)
+
+        self.calculated_thresholds_ = self._calculate_dynamic_thresholds(stkde_intensities_train)
             
         self.n_classes_eff_ = len(self.calculated_thresholds_) + 1
         self.n_classes_ = self.n_classes_eff_  # Add this line for sklearn compatibility

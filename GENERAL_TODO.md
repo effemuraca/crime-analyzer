@@ -1,4 +1,3 @@
-- Riguardare tutti gli md all'interno dei jupyter notebook
+- Sistemare pattern a analysis (md e codice)
 - Rimuovere il codice inutile
 - inserire waterfall plot per shap
-- riguardare folding e training set finale
