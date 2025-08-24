@@ -31,7 +31,7 @@ EXPECTED_CATEGORICAL = [
     'VIC_AGE_GROUP', 'VIC_RACE', 'VIC_SEX'
 ]
 EXPECTED_BOOLEAN_LIKE = [
-    'IS_WEEKEND', 'IS_HOLIDAY', 'IS_PAYDAY', 'SAME_AGE_GROUP', 'SAME_SEX', 'TO_CHECK_CITIZENS'
+    'IS_WEEKEND', 'IS_HOLIDAY', 'IS_PAYDAY', 'SAME_AGE_GROUP', 'SAME_SEX'
 ]
 EXPECTED_NUMERIC_DISTANCES = [
     'MIN_POI_DISTANCE', 'AVG_POI_DISTANCE', 'MAX_POI_DISTANCE',
@@ -60,7 +60,7 @@ ITEM_COLS_FOR_MINING = [
     'SUSP_AGE', 'SUSP_RACE', 'SUSP_SEX',
     'VIC_AGE', 'VIC_RACE', 'VIC_SEX',
     'DIST_BIN', 'COUNT_BIN', 'DIVERSITY_BIN', 'DENSITY_BIN',
-    'IS_WEEKEND', 'IS_HOLIDAY', 'IS_PAYDAY', 'SAME_AGE', 'SAME_SEX', 'TO_CHECK_CITIZENS'
+    'IS_WEEKEND', 'IS_HOLIDAY', 'IS_PAYDAY', 'SAME_AGE', 'SAME_SEX'
 ]
 
 
@@ -162,13 +162,53 @@ def propose_bins(df: pd.DataFrame) -> Dict[str, Any]:
                 'coverage': bin_coverage(df[col], DISTANCE_BINS, DISTANCE_LABELS)
             }
 
-    # Counts: use defaults and report coverage
+    # Counts: use defaults, but propose quantiles if coverage is poor
     for col in [c for c in EXPECTED_NUMERIC_COUNTS if c in df.columns]:
-        proposal['counts'][col] = {
-            'bins': COUNT_BINS,
-            'labels': COUNT_LABELS,
-            'coverage': bin_coverage(df[col], COUNT_BINS, COUNT_LABELS)
-        }
+        s = pd.to_numeric(df[col], errors='coerce').dropna()
+        if s.empty:
+            continue
+
+        # First, check coverage with default fixed bins
+        default_coverage = bin_coverage(s, COUNT_BINS, COUNT_LABELS)
+        max_coverage_pct = max(default_coverage.values())
+
+        # If any single bin covers > 90% of the data, switch to quantiles
+        if max_coverage_pct > 0.9:
+            quantile_success = False
+            last_exception = None
+            for q in [4, 3, 2]:
+                try:
+                    qcut = pd.qcut(s, q=q, labels=quartile_labels(q), duplicates='drop')
+                    unique_labels = list(qcut.dropna().unique())
+                    q_labels = quartile_labels(len(unique_labels)) if unique_labels else quartile_labels(q)
+                    q_coverage = qcut.value_counts(normalize=True, dropna=False).to_dict()
+                    unknown_share = float(q_coverage.get(np.nan, 0.0))
+                    cov = {str(k): float(v) for k, v in q_coverage.items() if not (isinstance(k, float) and math.isnan(k))}
+                    cov['UNKNOWN'] = unknown_share
+                    proposal['counts'][col] = {
+                        'strategy': 'quantiles',
+                        'q': q,
+                        'labels': q_labels,
+                        'coverage': cov,
+                        'note': f'Switched to quantiles (q={q}) due to poor coverage with fixed bins (max bin had {max_coverage_pct:.1%} coverage).'
+                    }
+                    quantile_success = True
+                    break
+                except Exception as e:
+                    last_exception = e
+            if not quantile_success:
+                # Fallback to default if all quantile attempts fail
+                proposal['counts'][col] = {
+                    'bins': COUNT_BINS, 'labels': COUNT_LABELS, 'coverage': default_coverage,
+                    'note': f'Quantile binning failed for q=4,3,2: {last_exception}. Reverting to default.'
+                }
+        else:
+            # If coverage is acceptable, use the default fixed bins
+            proposal['counts'][col] = {
+                'bins': COUNT_BINS,
+                'labels': COUNT_LABELS,
+                'coverage': default_coverage
+            }
 
     # Auto-detect *_COUNT columns
     for col in df.columns:
@@ -297,7 +337,7 @@ def build_profile(df: pd.DataFrame) -> Dict[str, Any]:
             'SUSP_AGE', 'SUSP_RACE', 'SUSP_SEX',
             'VIC_AGE', 'VIC_RACE', 'VIC_SEX',
             'DIST_BIN', 'COUNT_BIN', 'DIVERSITY_BIN', 'DENSITY_BIN',
-            'IS_WEEKEND', 'IS_HOLIDAY', 'IS_PAYDAY', 'SAME_AGE', 'SAME_SEX', 'TO_CHECK_CITIZENS'
+            'IS_WEEKEND', 'IS_HOLIDAY', 'IS_PAYDAY', 'SAME_AGE', 'SAME_SEX'
         ]
     }
 
