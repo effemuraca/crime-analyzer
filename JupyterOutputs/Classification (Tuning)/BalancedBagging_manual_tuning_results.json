@@ -1,0 +1,372 @@
+{
+  "best_params": {
+    "classifier__n_estimators": 50,
+    "classifier__max_samples": 1.0,
+    "classifier__max_features": 1.0,
+    "classifier__bootstrap_features": false,
+    "classifier__bootstrap": true
+  },
+  "best_score": 0.27464439767644827,
+  "all_results": [
+    {
+      "params": {
+        "classifier__n_estimators": 200,
+        "classifier__max_samples": 1.0,
+        "classifier__max_features": 1.0,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": false
+      },
+      "mean_score": 0.27317157981767537,
+      "std_score": 0.033282942389920904,
+      "fold_scores": [
+        0.2789001873160289,
+        0.2913477478748545,
+        0.2459016393442623,
+        0.22781019656019655,
+        0.3218981279930344
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 100,
+        "classifier__max_samples": 0.7,
+        "classifier__max_features": 1.0,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": true
+      },
+      "mean_score": 0.26915919959425544,
+      "std_score": 0.03202844561005034,
+      "fold_scores": [
+        0.2759008636378677,
+        0.28618841832324976,
+        0.242188344685912,
+        0.22569747580185995,
+        0.31582089552238807
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 200,
+        "classifier__max_samples": 1.0,
+        "classifier__max_features": 0.5,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": false
+      },
+      "mean_score": 0.2504833421996994,
+      "std_score": 0.031665563613516357,
+      "fold_scores": [
+        0.26837903952620057,
+        0.26638355371103173,
+        0.22593551423864439,
+        0.2022983816129471,
+        0.28942022190967337
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 50,
+        "classifier__max_samples": 0.7,
+        "classifier__max_features": 1.0,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": false
+      },
+      "mean_score": 0.2698042180501995,
+      "std_score": 0.03277968999597736,
+      "fold_scores": [
+        0.2766056263269639,
+        0.2869022869022869,
+        0.24333719582850522,
+        0.22455768939966733,
+        0.31761829179357387
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 100,
+        "classifier__max_samples": 1.0,
+        "classifier__max_features": 1.0,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": true
+      },
+      "mean_score": 0.2742973316432035,
+      "std_score": 0.033374396323692185,
+      "fold_scores": [
+        0.2797517195101493,
+        0.2913865324369038,
+        0.2462891698735569,
+        0.22986992877051718,
+        0.32418930762489045
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 100,
+        "classifier__max_samples": 0.7,
+        "classifier__max_features": 1.0,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": false
+      },
+      "mean_score": 0.26903676525612596,
+      "std_score": 0.03214325077796907,
+      "fold_scores": [
+        0.2762665252973725,
+        0.2868128442273719,
+        0.24240675275954116,
+        0.224642614023145,
+        0.3150550899731995
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 50,
+        "classifier__max_samples": 0.7,
+        "classifier__max_features": 0.5,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": false
+      },
+      "mean_score": 0.242154993045025,
+      "std_score": 0.030368011237544238,
+      "fold_scores": [
+        0.2653892672990006,
+        0.25948791876899935,
+        0.21879985673818905,
+        0.19432378588458146,
+        0.2727741365343545
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 50,
+        "classifier__max_samples": 0.7,
+        "classifier__max_features": 1.0,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": true
+      },
+      "mean_score": 0.27030595120388484,
+      "std_score": 0.03247132123218961,
+      "fold_scores": [
+        0.27629398899860824,
+        0.2875698954607023,
+        0.24245048165385863,
+        0.22704724108982677,
+        0.31816814881642824
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 200,
+        "classifier__max_samples": 1.0,
+        "classifier__max_features": 0.5,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": true
+      },
+      "mean_score": 0.2519137976189686,
+      "std_score": 0.03130514246432891,
+      "fold_scores": [
+        0.26822363765038926,
+        0.26865671641791045,
+        0.2275343671700413,
+        0.2044392523364486,
+        0.2907150145200534
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 200,
+        "classifier__max_samples": 1.0,
+        "classifier__max_features": 1.0,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": true
+      },
+      "mean_score": 0.2739341424548958,
+      "std_score": 0.03329155794184016,
+      "fold_scores": [
+        0.27949852507374634,
+        0.29122522966456654,
+        0.2460547032331295,
+        0.22942585580712463,
+        0.32346639849591186
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 50,
+        "classifier__max_samples": 0.5,
+        "classifier__max_features": 1.0,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": true
+      },
+      "mean_score": 0.2636890058565357,
+      "std_score": 0.030007782732866427,
+      "fold_scores": [
+        0.27165803277620304,
+        0.28098276096104247,
+        0.23856858846918488,
+        0.2217328007764381,
+        0.3055028462998102
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 100,
+        "classifier__max_samples": 1.0,
+        "classifier__max_features": 1.0,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": false
+      },
+      "mean_score": 0.2734195894655412,
+      "std_score": 0.03289450802346629,
+      "fold_scores": [
+        0.2787976059116595,
+        0.29145196583609795,
+        0.24628699255564926,
+        0.22884229998458455,
+        0.32171908303971464
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 50,
+        "classifier__max_samples": 0.5,
+        "classifier__max_features": 0.5,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": true
+      },
+      "mean_score": 0.24006711393274563,
+      "std_score": 0.02928979957877723,
+      "fold_scores": [
+        0.26275807722616235,
+        0.25972396486825594,
+        0.21733505821474774,
+        0.19365967972920192,
+        0.26685878962536025
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 100,
+        "classifier__max_samples": 0.7,
+        "classifier__max_features": 0.5,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": true
+      },
+      "mean_score": 0.2463899195023207,
+      "std_score": 0.030405449546911573,
+      "fold_scores": [
+        0.2663812657742564,
+        0.2633587786259542,
+        0.22284122562674094,
+        0.19912318864830494,
+        0.2802451388363471
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 200,
+        "classifier__max_samples": 0.5,
+        "classifier__max_features": 1.0,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": false
+      },
+      "mean_score": 0.263335187876751,
+      "std_score": 0.0310640805721975,
+      "fold_scores": [
+        0.27203915171288745,
+        0.2795706184174993,
+        0.23729651470744023,
+        0.2202561634707929,
+        0.3075134910751349
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 50,
+        "classifier__max_samples": 1.0,
+        "classifier__max_features": 1.0,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": true
+      },
+      "mean_score": 0.27464439767644827,
+      "std_score": 0.03284592360968298,
+      "fold_scores": [
+        0.2787323661161998,
+        0.2923707841334936,
+        0.24689543684326548,
+        0.23137468827930174,
+        0.32384871300998075
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 100,
+        "classifier__max_samples": 0.5,
+        "classifier__max_features": 0.5,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": false
+      },
+      "mean_score": 0.24068981486384483,
+      "std_score": 0.029327307111602616,
+      "fold_scores": [
+        0.26196236136856327,
+        0.2592117208778136,
+        0.21784938567769963,
+        0.19453344667494932,
+        0.2698921597201982
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 200,
+        "classifier__max_samples": 0.7,
+        "classifier__max_features": 0.5,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": true
+      },
+      "mean_score": 0.2472380208857287,
+      "std_score": 0.030261912428647935,
+      "fold_scores": [
+        0.26439624556062913,
+        0.26497695852534564,
+        0.2239029753773365,
+        0.20047845277805856,
+        0.2824354721872736
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 200,
+        "classifier__max_samples": 0.5,
+        "classifier__max_features": 1.0,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": true
+      },
+      "mean_score": 0.2630041790879637,
+      "std_score": 0.03124620688281367,
+      "fold_scores": [
+        0.27095180840347055,
+        0.2793333783145537,
+        0.23643656322567025,
+        0.22031261574931477,
+        0.3079865297468091
+      ]
+    },
+    {
+      "params": {
+        "classifier__n_estimators": 100,
+        "classifier__max_samples": 0.5,
+        "classifier__max_features": 0.5,
+        "classifier__bootstrap_features": false,
+        "classifier__bootstrap": true
+      },
+      "mean_score": 0.2420886172775881,
+      "std_score": 0.029529148632035093,
+      "fold_scores": [
+        0.2630947873280323,
+        0.2605494194279241,
+        0.21911376308324368,
+        0.19567219152854512,
+        0.27201292502019536
+      ]
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "BORO": [
+    "BRONX",
+    "BROOKLYN",
+    "MANHATTAN",
+    "QUEENS",
+    "STATEN ISLAND"
+  ],
+  "HAS_POI": [
+    "NO",
+    "YES"
+  ],
+  "LAW_CAT": [
+    "FELONY",
+    "MISDEMEANOR",
+    "VIOLATION"
+  ],
+  "LOC_OF_OCCUR": [
+    "FRONT",
+    "INSIDE",
+    "OPPOSITE",
+    "REAR",
+    "UNKNOWN"
+  ],
+  "SEASON": [
+    "AUTUMN",
+    "SPRING",
+    "SUMMER",
+    "WINTER"
+  ],
+  "SUSP_AGE": [
+    "18-24",
+    "25-44",
+    "45-64",
+    "65+",
+    "<18",
+    "UNKNOWN"
+  ],
+  "SUSP_RACE": [
+    "AMERICAN INDIAN/ALASKAN NATIVE",
+    "ASIAN / PACIFIC ISLANDER",
+    "BLACK",
+    "BLACK HISPANIC",
+    "UNKNOWN",
+    "WHITE",
+    "WHITE HISPANIC"
+  ],
+  "SUSP_SEX": [
+    "F",
+    "M",
+    "U"
+  ],
+  "TIME_BUCKET": [
+    "AFTERNOON",
+    "EVENING",
+    "MORNING",
+    "NIGHT"
+  ],
+  "VIC_AGE": [
+    "18-24",
+    "25-44",
+    "45-64",
+    "65+",
+    "<18",
+    "UNKNOWN"
+  ],
+  "VIC_RACE": [
+    "AMERICAN INDIAN/ALASKAN NATIVE",
+    "ASIAN / PACIFIC ISLANDER",
+    "BLACK",
+    "BLACK HISPANIC",
+    "UNKNOWN",
+    "WHITE",
+    "WHITE HISPANIC"
+  ],
+  "VIC_SEX": [
+    "D",
+    "E",
+    "F",
+    "L",
+    "M"
+  ]
+}

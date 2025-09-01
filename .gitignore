@@ -1,30 +1,21 @@
 # Raw, intermediate, and final data folders
 Data/
-JupyterOutputs/**/Raw/
-JupyterOutputs/**/Processed/
-JupyterOutputs/**/PrePreProcessed/
-JupyterOutputs/**/Merged/
-JupyterOutputs/**/DataIntegrated/
-JupyterOutputs/**/FeatureEngineered/
-JupyterOutputs/**/Final/
 
 # Data files (large or unnecessary)
 *.csv
 *.csv.gz
 *.npy
-*.joblib
 *.xlsx
 *.pdf
 *.pptx
-*.json
 *.gz
 *.h5
+*.pkl
 *.parquet
+LogisticRegression_production_model.joblib
 
 # Notebook outputs and cache
-JupyterOutputs/**
 .ipynb_checkpoints/
-*.html
 
 # Temporary and system files
 *.pyc

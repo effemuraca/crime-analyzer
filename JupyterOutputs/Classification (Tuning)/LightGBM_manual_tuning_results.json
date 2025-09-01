@@ -1,0 +1,414 @@
+{
+  "best_params": {
+    "classifier__subsample": 0.7,
+    "classifier__num_leaves": 63,
+    "classifier__n_estimators": 200,
+    "classifier__min_child_samples": 50,
+    "classifier__max_depth": 6,
+    "classifier__learning_rate": 0.1,
+    "classifier__colsample_bytree": 0.7
+  },
+  "best_score": 0.26581233402325855,
+  "all_results": [
+    {
+      "params": {
+        "classifier__subsample": 1.0,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 200,
+        "classifier__min_child_samples": 50,
+        "classifier__max_depth": -1,
+        "classifier__learning_rate": 0.05,
+        "classifier__colsample_bytree": 0.7
+      },
+      "mean_score": 0.2562082109075329,
+      "std_score": 0.03279893528446003,
+      "fold_scores": [
+        0.2779537642380535,
+        0.28683071074031047,
+        0.22820810829288302,
+        0.20602857838194902,
+        0.28201989288446827
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 0.7,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 100,
+        "classifier__min_child_samples": 50,
+        "classifier__max_depth": -1,
+        "classifier__learning_rate": 0.05,
+        "classifier__colsample_bytree": 1.0
+      },
+      "mean_score": 0.244888334035692,
+      "std_score": 0.02936213634850231,
+      "fold_scores": [
+        0.26498157605533645,
+        0.27262005054759897,
+        0.22594917172548615,
+        0.19607973864924327,
+        0.26481113320079525
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 0.7,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 200,
+        "classifier__min_child_samples": 50,
+        "classifier__max_depth": 6,
+        "classifier__learning_rate": 0.1,
+        "classifier__colsample_bytree": 0.7
+      },
+      "mean_score": 0.2641035948507904,
+      "std_score": 0.0351789873486768,
+      "fold_scores": [
+        0.27515223722531107,
+        0.2992051682212463,
+        0.23095180764335593,
+        0.21488382209011492,
+        0.30032493907392366
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 1.0,
+        "classifier__num_leaves": 63,
+        "classifier__n_estimators": 200,
+        "classifier__min_child_samples": 50,
+        "classifier__max_depth": -1,
+        "classifier__learning_rate": 0.05,
+        "classifier__colsample_bytree": 1.0
+      },
+      "mean_score": 0.2651833166282002,
+      "std_score": 0.035274713768141175,
+      "fold_scores": [
+        0.28512694007606126,
+        0.28439640631992014,
+        0.23528175673309284,
+        0.2130283583694834,
+        0.30808312164244367
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 1.0,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 100,
+        "classifier__min_child_samples": 20,
+        "classifier__max_depth": 6,
+        "classifier__learning_rate": 0.05,
+        "classifier__colsample_bytree": 1.0
+      },
+      "mean_score": 0.2416563684332617,
+      "std_score": 0.030159945316344243,
+      "fold_scores": [
+        0.26542006673494334,
+        0.27080661491731356,
+        0.22303929836397368,
+        0.19134976334258202,
+        0.25766609880749575
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 1.0,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 100,
+        "classifier__min_child_samples": 20,
+        "classifier__max_depth": -1,
+        "classifier__learning_rate": 0.1,
+        "classifier__colsample_bytree": 1.0
+      },
+      "mean_score": 0.25576295890262246,
+      "std_score": 0.030999948002986593,
+      "fold_scores": [
+        0.27483862381047447,
+        0.2763942712721146,
+        0.23505793681541226,
+        0.2049932476886319,
+        0.2875307149264792
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 1.0,
+        "classifier__num_leaves": 63,
+        "classifier__n_estimators": 200,
+        "classifier__min_child_samples": 50,
+        "classifier__max_depth": 3,
+        "classifier__learning_rate": 0.05,
+        "classifier__colsample_bytree": 0.7
+      },
+      "mean_score": 0.24055152723359488,
+      "std_score": 0.02697556492268426,
+      "fold_scores": [
+        0.25733619187994106,
+        0.2702020202020202,
+        0.22717937823100348,
+        0.19442160087719298,
+        0.25361844497781655
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 0.7,
+        "classifier__num_leaves": 63,
+        "classifier__n_estimators": 100,
+        "classifier__min_child_samples": 20,
+        "classifier__max_depth": 6,
+        "classifier__learning_rate": 0.05,
+        "classifier__colsample_bytree": 0.7
+      },
+      "mean_score": 0.24301918029639072,
+      "std_score": 0.0299510247764188,
+      "fold_scores": [
+        0.2607862549101012,
+        0.27621483375959077,
+        0.2214653042142523,
+        0.19537018559169828,
+        0.26125932300631094
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 0.7,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 100,
+        "classifier__min_child_samples": 20,
+        "classifier__max_depth": 6,
+        "classifier__learning_rate": 0.05,
+        "classifier__colsample_bytree": 0.7
+      },
+      "mean_score": 0.24221603610935355,
+      "std_score": 0.03023081978293888,
+      "fold_scores": [
+        0.26106280193236714,
+        0.27566245132834843,
+        0.219350563286945,
+        0.19479267116682739,
+        0.26021169283227963
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 1.0,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 100,
+        "classifier__min_child_samples": 50,
+        "classifier__max_depth": 3,
+        "classifier__learning_rate": 0.05,
+        "classifier__colsample_bytree": 0.7
+      },
+      "mean_score": 0.22518312130050883,
+      "std_score": 0.02312268698114357,
+      "fold_scores": [
+        0.24240512319000598,
+        0.24659977703455965,
+        0.2159981011155946,
+        0.18399973629561261,
+        0.23691286886677143
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 0.7,
+        "classifier__num_leaves": 63,
+        "classifier__n_estimators": 200,
+        "classifier__min_child_samples": 50,
+        "classifier__max_depth": 6,
+        "classifier__learning_rate": 0.1,
+        "classifier__colsample_bytree": 0.7
+      },
+      "mean_score": 0.26581233402325855,
+      "std_score": 0.034292025456456564,
+      "fold_scores": [
+        0.2742100233945105,
+        0.2990505182286004,
+        0.23299420118754124,
+        0.2190448113207547,
+        0.30376211598488584
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 0.7,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 100,
+        "classifier__min_child_samples": 20,
+        "classifier__max_depth": 6,
+        "classifier__learning_rate": 0.05,
+        "classifier__colsample_bytree": 1.0
+      },
+      "mean_score": 0.2416563684332617,
+      "std_score": 0.030159945316344243,
+      "fold_scores": [
+        0.26542006673494334,
+        0.27080661491731356,
+        0.22303929836397368,
+        0.19134976334258202,
+        0.25766609880749575
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 0.7,
+        "classifier__num_leaves": 63,
+        "classifier__n_estimators": 100,
+        "classifier__min_child_samples": 20,
+        "classifier__max_depth": 6,
+        "classifier__learning_rate": 0.1,
+        "classifier__colsample_bytree": 0.7
+      },
+      "mean_score": 0.25681986391263945,
+      "std_score": 0.03209703882795945,
+      "fold_scores": [
+        0.26769918672844506,
+        0.28939270682276375,
+        0.22489068281197444,
+        0.21307227181111432,
+        0.28904447138889977
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 1.0,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 100,
+        "classifier__min_child_samples": 20,
+        "classifier__max_depth": 6,
+        "classifier__learning_rate": 0.1,
+        "classifier__colsample_bytree": 0.7
+      },
+      "mean_score": 0.25267855782041215,
+      "std_score": 0.03285611081389894,
+      "fold_scores": [
+        0.2659478305785124,
+        0.2862378854625551,
+        0.2223411371237458,
+        0.20545233547490885,
+        0.28341360046233866
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 1.0,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 100,
+        "classifier__min_child_samples": 50,
+        "classifier__max_depth": 3,
+        "classifier__learning_rate": 0.1,
+        "classifier__colsample_bytree": 1.0
+      },
+      "mean_score": 0.2408742914518686,
+      "std_score": 0.027100053663063433,
+      "fold_scores": [
+        0.2567997877139445,
+        0.27351577158636314,
+        0.22985298851808134,
+        0.19447294616594843,
+        0.2497299632750054
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 0.7,
+        "classifier__num_leaves": 63,
+        "classifier__n_estimators": 200,
+        "classifier__min_child_samples": 50,
+        "classifier__max_depth": 6,
+        "classifier__learning_rate": 0.05,
+        "classifier__colsample_bytree": 0.7
+      },
+      "mean_score": 0.2567245495381578,
+      "std_score": 0.032775904004544214,
+      "fold_scores": [
+        0.27128218602207044,
+        0.2933314118960983,
+        0.22579446827192598,
+        0.21015239245497497,
+        0.28306228904571956
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 1.0,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 100,
+        "classifier__min_child_samples": 20,
+        "classifier__max_depth": 3,
+        "classifier__learning_rate": 0.1,
+        "classifier__colsample_bytree": 1.0
+      },
+      "mean_score": 0.2410519145415324,
+      "std_score": 0.027068352192379082,
+      "fold_scores": [
+        0.25661411010155,
+        0.27357087199829994,
+        0.23022355975924333,
+        0.19456268021419745,
+        0.2502883506343714
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 1.0,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 200,
+        "classifier__min_child_samples": 20,
+        "classifier__max_depth": 6,
+        "classifier__learning_rate": 0.1,
+        "classifier__colsample_bytree": 0.7
+      },
+      "mean_score": 0.26303191596619896,
+      "std_score": 0.03452147945678408,
+      "fold_scores": [
+        0.27574054988530206,
+        0.2956184734632361,
+        0.2300751363776718,
+        0.21459568928106465,
+        0.2991297308237199
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 1.0,
+        "classifier__num_leaves": 63,
+        "classifier__n_estimators": 200,
+        "classifier__min_child_samples": 50,
+        "classifier__max_depth": 3,
+        "classifier__learning_rate": 0.05,
+        "classifier__colsample_bytree": 1.0
+      },
+      "mean_score": 0.23931659278165443,
+      "std_score": 0.02690063297361093,
+      "fold_scores": [
+        0.2558933722356686,
+        0.271595385481148,
+        0.22833611416805707,
+        0.1933265236636023,
+        0.24743156835979596
+      ]
+    },
+    {
+      "params": {
+        "classifier__subsample": 0.7,
+        "classifier__num_leaves": 31,
+        "classifier__n_estimators": 200,
+        "classifier__min_child_samples": 20,
+        "classifier__max_depth": 6,
+        "classifier__learning_rate": 0.1,
+        "classifier__colsample_bytree": 0.7
+      },
+      "mean_score": 0.26303191596619896,
+      "std_score": 0.03452147945678408,
+      "fold_scores": [
+        0.27574054988530206,
+        0.2956184734632361,
+        0.2300751363776718,
+        0.21459568928106465,
+        0.2991297308237199
+      ]
+    }
+  ]
+}

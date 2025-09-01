@@ -1,0 +1,170 @@
+{
+  "best_params": {
+    "classifier__solver": "liblinear",
+    "classifier__penalty": "l2",
+    "classifier__C": 100.0
+  },
+  "best_score": 0.3371072513991721,
+  "all_results": [
+    {
+      "params": {
+        "classifier__solver": "liblinear",
+        "classifier__penalty": "l1",
+        "classifier__C": 0.01
+      },
+      "mean_score": 0.30922338859899057,
+      "std_score": 0.035775595287311286,
+      "fold_scores": [
+        0.32535512745670364,
+        0.3558389890007021,
+        0.33001584786053884,
+        0.2627394909922791,
+        0.27216748768472904
+      ]
+    },
+    {
+      "params": {
+        "classifier__solver": "liblinear",
+        "classifier__penalty": "l2",
+        "classifier__C": 0.01
+      },
+      "mean_score": 0.3091085950288154,
+      "std_score": 0.034868818295751336,
+      "fold_scores": [
+        0.3261990465998638,
+        0.35152000916013054,
+        0.3325202208242393,
+        0.2664408363508936,
+        0.26886286220894967
+      ]
+    },
+    {
+      "params": {
+        "classifier__solver": "liblinear",
+        "classifier__penalty": "l1",
+        "classifier__C": 0.1
+      },
+      "mean_score": 0.33315499117528985,
+      "std_score": 0.03590600665871678,
+      "fold_scores": [
+        0.3539957624816646,
+        0.3777806352063778,
+        0.35286686785037547,
+        0.2920135882235396,
+        0.289118102114492
+      ]
+    },
+    {
+      "params": {
+        "classifier__solver": "liblinear",
+        "classifier__penalty": "l2",
+        "classifier__C": 0.1
+      },
+      "mean_score": 0.3329712287970293,
+      "std_score": 0.035626366370783834,
+      "fold_scores": [
+        0.3542186990987078,
+        0.3766540944831554,
+        0.35266886441747913,
+        0.2936235973929987,
+        0.28769088859280517
+      ]
+    },
+    {
+      "params": {
+        "classifier__solver": "liblinear",
+        "classifier__penalty": "l1",
+        "classifier__C": 1.0
+      },
+      "mean_score": 0.3367797829173109,
+      "std_score": 0.03538670492337206,
+      "fold_scores": [
+        0.35807715657597,
+        0.38030273500941986,
+        0.3558961260110685,
+        0.2983577269291555,
+        0.29126517006094066
+      ]
+    },
+    {
+      "params": {
+        "classifier__solver": "liblinear",
+        "classifier__penalty": "l2",
+        "classifier__C": 1.0
+      },
+      "mean_score": 0.33678930941151924,
+      "std_score": 0.03533514052850482,
+      "fold_scores": [
+        0.3580689655172414,
+        0.38022220778376975,
+        0.35587087619723307,
+        0.2986861113021944,
+        0.2910983862571577
+      ]
+    },
+    {
+      "params": {
+        "classifier__solver": "liblinear",
+        "classifier__penalty": "l1",
+        "classifier__C": 10.0
+      },
+      "mean_score": 0.3369682248198115,
+      "std_score": 0.035385840238800446,
+      "fold_scores": [
+        0.3583112290008842,
+        0.38049414824447336,
+        0.35602242884519836,
+        0.2986225895316804,
+        0.2913907284768212
+      ]
+    },
+    {
+      "params": {
+        "classifier__solver": "liblinear",
+        "classifier__penalty": "l2",
+        "classifier__C": 10.0
+      },
+      "mean_score": 0.33707805495838306,
+      "std_score": 0.035334451136658264,
+      "fold_scores": [
+        0.3582601005913889,
+        0.380518889394629,
+        0.35625976978826207,
+        0.2988695891921698,
+        0.29148192582546556
+      ]
+    },
+    {
+      "params": {
+        "classifier__solver": "liblinear",
+        "classifier__penalty": "l1",
+        "classifier__C": 100.0
+      },
+      "mean_score": 0.3370069721491024,
+      "std_score": 0.03534937163340297,
+      "fold_scores": [
+        0.3582601005913889,
+        0.38049414824447336,
+        0.35609825358512,
+        0.2987460383078407,
+        0.2914363200166893
+      ]
+    },
+    {
+      "params": {
+        "classifier__solver": "liblinear",
+        "classifier__penalty": "l2",
+        "classifier__C": 100.0
+      },
+      "mean_score": 0.3371072513991721,
+      "std_score": 0.035316377065726746,
+      "fold_scores": [
+        0.35829970703664804,
+        0.3804878048780488,
+        0.3563104036384309,
+        0.29891079553288297,
+        0.29152754590984975
+      ]
+    }
+  ]
+}

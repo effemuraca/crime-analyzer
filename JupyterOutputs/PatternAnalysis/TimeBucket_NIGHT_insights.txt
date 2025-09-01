@@ -1,0 +1,71 @@
+--- Top-K Rules for TimeBucket = NIGHT (84,236 records) ---
+
+IF (LOC_OF_OCCUR=INSIDE) THEN (HAS_POI=NO)
+  - Kulc: 0.600, Conf: 70.48%, Lift: 1.07, Support: 0.3265, Score: 0.343
+
+IF (SUSP_AGE=25-44) THEN (SUSP_SEX=M)
+  - Kulc: 0.639, Conf: 80.80%, Lift: 1.42, Support: 0.2679, Score: 0.331
+
+IF (VIC_AGE=25-44) THEN (HAS_POI=NO)
+  - Kulc: 0.566, Conf: 70.23%, Lift: 1.06, Support: 0.2839, Score: 0.302
+
+IF (DIST_BIN=<250m) THEN (SUSP_SEX=M)
+  - Kulc: 0.554, Conf: 59.90%, Lift: 1.05, Support: 0.2899, Score: 0.298
+
+IF (VIC_SEX=F) THEN (HAS_POI=NO)
+  - Kulc: 0.566, Conf: 74.19%, Lift: 1.12, Support: 0.2583, Score: 0.288
+
+IF (LAW_CAT=FELONY) THEN (HAS_POI=NO)
+  - Kulc: 0.545, Conf: 66.93%, Lift: 1.01, Support: 0.2777, Score: 0.287
+
+IF (SUSP_RACE=BLACK) THEN (SUSP_SEX=M)
+  - Kulc: 0.593, Conf: 79.13%, Lift: 1.39, Support: 0.2251, Score: 0.281
+
+IF (VIC_SEX=M) THEN (HAS_POI=NO)
+  - Kulc: 0.540, Conf: 67.74%, Lift: 1.03, Support: 0.2657, Score: 0.278
+
+IF (LAW_CAT=MISDEMEANOR) THEN (SUSP_SEX=M)
+  - Kulc: 0.531, Conf: 58.48%, Lift: 1.02, Support: 0.2719, Score: 0.277
+
+IF (BORO=MANHATTAN) THEN (DIST_BIN=<250m)
+  - Kulc: 0.583, Conf: 80.58%, Lift: 1.66, Support: 0.1739, Score: 0.243
+
+IF (SUSP_SEX=U) THEN (HAS_POI=NO)
+  - Kulc: 0.507, Conf: 69.12%, Lift: 1.05, Support: 0.2137, Score: 0.235
+
+IF (LOC_OF_OCCUR=FRONT) THEN (HAS_POI=NO)
+  - Kulc: 0.512, Conf: 71.86%, Lift: 1.09, Support: 0.2022, Score: 0.230
+
+IF (HAS_POI=YES) THEN (SUSP_SEX=M)
+  - Kulc: 0.489, Conf: 61.27%, Lift: 1.07, Support: 0.2080, Score: 0.223
+
+IF (DIST_BIN=250-1000m) THEN (LOC_OF_OCCUR=INSIDE)
+  - Kulc: 0.479, Conf: 49.38%, Lift: 1.07, Support: 0.2153, Score: 0.222
+
+IF (BORO=BRONX) THEN (HAS_POI=NO)
+  - Kulc: 0.505, Conf: 75.25%, Lift: 1.14, Support: 0.1699, Score: 0.208
+
+IF (SUSP_RACE=WHITE HISPANIC) THEN (SUSP_SEX=M)
+  - Kulc: 0.532, Conf: 80.59%, Lift: 1.41, Support: 0.1478, Score: 0.205
+
+IF (VIC_RACE=BLACK) THEN (HAS_POI=NO)
+  - Kulc: 0.494, Conf: 72.77%, Lift: 1.10, Support: 0.1714, Score: 0.204
+
+IF (BORO=QUEENS) THEN (HAS_POI=NO)
+  - Kulc: 0.465, Conf: 67.83%, Lift: 1.03, Support: 0.1668, Score: 0.190
+
+IF (VIC_SEX=E) THEN (SUSP_SEX=M)
+  - Kulc: 0.505, Conf: 79.10%, Lift: 1.39, Support: 0.1250, Score: 0.179
+
+IF (VIC_RACE=WHITE HISPANIC) THEN (HAS_POI=NO)
+  - Kulc: 0.463, Conf: 70.21%, Lift: 1.06, Support: 0.1480, Score: 0.178
+
+IF (SEASON=WINTER) THEN (HAS_POI=NO)
+  - Kulc: 0.446, Conf: 66.86%, Lift: 1.01, Support: 0.1470, Score: 0.171
+
+IF (VIC_AGE=45-64) THEN (HAS_POI=NO)
+  - Kulc: 0.461, Conf: 73.61%, Lift: 1.11, Support: 0.1233, Score: 0.162
+
+IF (LOC_OF_OCCUR=REAR) THEN (SUSP_SEX=M)
+  - Kulc: 0.418, Conf: 62.75%, Lift: 1.10, Support: 0.1188, Score: 0.144
+

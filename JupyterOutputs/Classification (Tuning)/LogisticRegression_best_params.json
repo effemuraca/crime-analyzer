@@ -1,0 +1,5 @@
+{
+  "classifier__solver": "liblinear",
+  "classifier__penalty": "l2",
+  "classifier__C": 100.0
+}

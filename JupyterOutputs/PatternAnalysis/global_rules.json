@@ -1,0 +1,467 @@
+{
+  "context": "global",
+  "tuned_min_support": 0.11,
+  "total_rules_found": 294,
+  "pruned_rules_count": 235,
+  "top_k_rules": [
+    {
+      "context": "global",
+      "antecedent": [
+        "LOC_OF_OCCUR=INSIDE"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.3494401055597161,
+      "confidence": 0.6593799628542972,
+      "lift": 1.031300640789656,
+      "leverage": 0.010605732983205884,
+      "conviction": 1.0587534664062974,
+      "zhangs_metric": 0.0,
+      "score": 0.3564306279182564,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "DIST_BIN=<250m"
+      ],
+      "consequent": [
+        "SUSP_SEX=M"
+      ],
+      "support": 0.29056916657751153,
+      "confidence": 0.5804924444824419,
+      "lift": 1.0694551498629905,
+      "leverage": 0.018870847471061103,
+      "conviction": 1.0898666724300132,
+      "zhangs_metric": 0.0,
+      "score": 0.30073706620292195,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "SUSP_AGE=25-44"
+      ],
+      "consequent": [
+        "SUSP_SEX=M"
+      ],
+      "support": 0.23600620519952925,
+      "confidence": 0.7795197681883234,
+      "lift": 1.4361279607218431,
+      "leverage": 0.07167112388762087,
+      "conviction": 2.073688420201291,
+      "zhangs_metric": 0.0,
+      "score": 0.2949610980135797,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "SUSP_RACE=BLACK"
+      ],
+      "consequent": [
+        "SUSP_SEX=M"
+      ],
+      "support": 0.23773581541314504,
+      "confidence": 0.7583843371026825,
+      "lift": 1.3971896492348335,
+      "leverage": 0.06758295495977687,
+      "conviction": 1.8922916590282284,
+      "zhangs_metric": 0.0,
+      "score": 0.2916641766990448,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "LAW_CAT=MISDEMEANOR"
+      ],
+      "consequent": [
+        "SUSP_SEX=M"
+      ],
+      "support": 0.28710281373702795,
+      "confidence": 0.5515144872185705,
+      "lift": 1.0160683643450712,
+      "leverage": 0.004540317145485806,
+      "conviction": 1.019447207459723,
+      "zhangs_metric": 0.0,
+      "score": 0.289463466282719,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "VIC_SEX=F"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.2590956099996434,
+      "confidence": 0.7302139292731832,
+      "lift": 1.1420882277239774,
+      "leverage": 0.03223431880501759,
+      "conviction": 1.3367355997435029,
+      "zhangs_metric": 0.0,
+      "score": 0.288980529083029,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "BORO=MANHATTAN"
+      ],
+      "consequent": [
+        "DIST_BIN=<250m"
+      ],
+      "support": 0.19694197781819478,
+      "confidence": 0.8178317820675152,
+      "lift": 1.6338456552001763,
+      "leverage": 0.07640306571754979,
+      "conviction": 2.7416619508867677,
+      "zhangs_metric": 0.0,
+      "score": 0.2687713480067388,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "VIC_AGE=25-44"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.23798188367033987,
+      "confidence": 0.7109639683791098,
+      "lift": 1.111980402003437,
+      "leverage": 0.023965626511875754,
+      "conviction": 1.2477082633367766,
+      "zhangs_metric": 0.0,
+      "score": 0.2642056032742653,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "VIC_SEX=M"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.22553047323561928,
+      "confidence": 0.6911660236723899,
+      "lift": 1.0810155043532637,
+      "leverage": 0.016902130415923255,
+      "conviction": 1.1677233487836733,
+      "zhangs_metric": 0.0,
+      "score": 0.2478757519396448,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "SUSP_SEX=U"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.2122374380371599,
+      "confidence": 0.6878503484703136,
+      "lift": 1.0758296355777708,
+      "leverage": 0.014959513151610093,
+      "conviction": 1.155319710556067,
+      "zhangs_metric": 0.0,
+      "score": 0.2349069075929751,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "HAS_POI=YES"
+      ],
+      "consequent": [
+        "SUSP_SEX=M"
+      ],
+      "support": 0.21632966014050853,
+      "confidence": 0.5998615574783683,
+      "lift": 1.105139331179494,
+      "leverage": 0.020580894317809906,
+      "conviction": 1.1426227900271124,
+      "zhangs_metric": 0.0,
+      "score": 0.23218670172852224,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "LAW_CAT=FELONY"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.21397061445740168,
+      "confidence": 0.6608602268972354,
+      "lift": 1.0336158419513837,
+      "leverage": 0.006958873950945826,
+      "conviction": 1.0633746722068407,
+      "zhangs_metric": 0.0,
+      "score": 0.23024866225530857,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "TIME_BUCKET=EVENING"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.20037088548910523,
+      "confidence": 0.6499962401883376,
+      "lift": 1.0166240662141939,
+      "leverage": 0.0032765099494170002,
+      "conviction": 1.0303679173318354,
+      "zhangs_metric": 0.0,
+      "score": 0.21561920228116582,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "LOC_OF_OCCUR=FRONT"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.17484219535679899,
+      "confidence": 0.7252427830743401,
+      "lift": 1.1343131260388528,
+      "leverage": 0.020702926980907643,
+      "conviction": 1.312550218300652,
+      "zhangs_metric": 0.0,
+      "score": 0.2087997301261534,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "VIC_RACE=BLACK"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.16567882743126136,
+      "confidence": 0.724711608208344,
+      "lift": 1.1334823440762014,
+      "leverage": 0.01951084493278571,
+      "conviction": 1.3100176244568602,
+      "zhangs_metric": 0.0,
+      "score": 0.20022965338367657,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "TIME_BUCKET=AFTERNOON"
+      ],
+      "consequent": [
+        "LOC_OF_OCCUR=INSIDE"
+      ],
+      "support": 0.1905976962305196,
+      "confidence": 0.5570053620839694,
+      "lift": 1.05104757329524,
+      "leverage": 0.00925700236167934,
+      "conviction": 1.0610679911598009,
+      "zhangs_metric": 0.0,
+      "score": 0.2000944941777304,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "BORO=BROOKLYN"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.17995256945187404,
+      "confidence": 0.6508932602386327,
+      "lift": 1.0180270469002706,
+      "leverage": 0.0031865689808641406,
+      "conviction": 1.0330154190147283,
+      "zhangs_metric": 0.0,
+      "score": 0.19775468461240336,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "BORO=BRONX"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.1605666702328733,
+      "confidence": 0.7357004550690773,
+      "lift": 1.1506694068434058,
+      "leverage": 0.021024705114194547,
+      "conviction": 1.3644845478251184,
+      "zhangs_metric": 0.0,
+      "score": 0.197716022023432,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "VIC_SEX=D"
+      ],
+      "consequent": [
+        "LOC_OF_OCCUR=INSIDE"
+      ],
+      "support": 0.12977425912057344,
+      "confidence": 0.8122677202263368,
+      "lift": 1.5327177695665464,
+      "leverage": 0.045104881824012386,
+      "conviction": 2.5038178363083423,
+      "zhangs_metric": 0.0,
+      "score": 0.19041429677065067,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "VIC_SEX=F"
+      ],
+      "consequent": [
+        "DIST_BIN=250-1000m"
+      ],
+      "support": 0.17417353161442173,
+      "confidence": 0.49087647180023214,
+      "lift": 1.1749358439427506,
+      "leverage": 0.02593264466527148,
+      "conviction": 1.143553471796523,
+      "zhangs_metric": 0.0,
+      "score": 0.18942461931328577,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "SUSP_RACE=WHITE HISPANIC"
+      ],
+      "consequent": [
+        "SUSP_SEX=M"
+      ],
+      "support": 0.12196248350629435,
+      "confidence": 0.7703023818908722,
+      "lift": 1.4191465489260797,
+      "leverage": 0.03602175835807915,
+      "conviction": 1.9904747265335332,
+      "zhangs_metric": 0.0,
+      "score": 0.17374199880006364,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "VIC_SEX=E"
+      ],
+      "consequent": [
+        "SUSP_SEX=M"
+      ],
+      "support": 0.11806640276737634,
+      "confidence": 0.7754667041435365,
+      "lift": 1.4286609036453526,
+      "leverage": 0.035425096866081196,
+      "conviction": 2.036256145651766,
+      "zhangs_metric": 0.0,
+      "score": 0.17059845789107095,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "BORO=QUEENS"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.14465069006098213,
+      "confidence": 0.6520774554486484,
+      "lift": 1.0198791827668545,
+      "leverage": 0.0028194883802538095,
+      "conviction": 1.0365314082204495,
+      "zhangs_metric": 0.0,
+      "score": 0.16702517790920948,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "VIC_AGE=45-64"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.12397739024999109,
+      "confidence": 0.7255376652648935,
+      "lift": 1.13477433537066,
+      "leverage": 0.014724487372613795,
+      "conviction": 1.3139604215766587,
+      "zhangs_metric": 0.0,
+      "score": 0.16187006450810054,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "VIC_RACE=WHITE HISPANIC"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.12216575728397704,
+      "confidence": 0.7118233766233767,
+      "lift": 1.1133245560920382,
+      "leverage": 0.01243517008414019,
+      "conviction": 1.251429213202131,
+      "zhangs_metric": 0.0,
+      "score": 0.1577911346255478,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "TIME_BUCKET=MORNING"
+      ],
+      "consequent": [
+        "LOC_OF_OCCUR=INSIDE"
+      ],
+      "support": 0.1259298883777326,
+      "confidence": 0.6316994633273704,
+      "lift": 1.1919924531750687,
+      "leverage": 0.020283339993724336,
+      "conviction": 1.2762605094054909,
+      "zhangs_metric": 0.0,
+      "score": 0.15424682343719143,
+      "min_support_used": 0.11
+    },
+    {
+      "context": "global",
+      "antecedent": [
+        "LAW_CAT=VIOLATION"
+      ],
+      "consequent": [
+        "HAS_POI=NO"
+      ],
+      "support": 0.11091080917228344,
+      "confidence": 0.7125542712474081,
+      "lift": 1.114467708957725,
+      "leverage": 0.011391721915812197,
+      "conviction": 1.254611249993057,
+      "zhangs_metric": 0.0,
+      "score": 0.1475374835091481,
+      "min_support_used": 0.11
+    }
+  ]
+}

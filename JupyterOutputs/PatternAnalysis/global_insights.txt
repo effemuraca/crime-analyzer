@@ -1,0 +1,83 @@
+--- Top-K Global Association Rules ---
+
+IF (LOC_OF_OCCUR=INSIDE) THEN (HAS_POI=NO)
+  - Kulc: 0.603, Confidence: 65.94%, Lift: 1.03, Support: 0.3494, Score: 0.356
+
+IF (DIST_BIN=<250m) THEN (SUSP_SEX=M)
+  - Kulc: 0.558, Confidence: 58.05%, Lift: 1.07, Support: 0.2906, Score: 0.301
+
+IF (SUSP_AGE=25-44) THEN (SUSP_SEX=M)
+  - Kulc: 0.607, Confidence: 77.95%, Lift: 1.44, Support: 0.2360, Score: 0.295
+
+IF (SUSP_RACE=BLACK) THEN (SUSP_SEX=M)
+  - Kulc: 0.598, Confidence: 75.84%, Lift: 1.40, Support: 0.2377, Score: 0.292
+
+IF (LAW_CAT=MISDEMEANOR) THEN (SUSP_SEX=M)
+  - Kulc: 0.540, Confidence: 55.15%, Lift: 1.02, Support: 0.2871, Score: 0.289
+
+IF (VIC_SEX=F) THEN (HAS_POI=NO)
+  - Kulc: 0.568, Confidence: 73.02%, Lift: 1.14, Support: 0.2591, Score: 0.289
+
+IF (BORO=MANHATTAN) THEN (DIST_BIN=<250m)
+  - Kulc: 0.606, Confidence: 81.78%, Lift: 1.63, Support: 0.1969, Score: 0.269
+
+IF (VIC_AGE=25-44) THEN (HAS_POI=NO)
+  - Kulc: 0.542, Confidence: 71.10%, Lift: 1.11, Support: 0.2380, Score: 0.264
+
+IF (VIC_SEX=M) THEN (HAS_POI=NO)
+  - Kulc: 0.522, Confidence: 69.12%, Lift: 1.08, Support: 0.2255, Score: 0.248
+
+IF (SUSP_SEX=U) THEN (HAS_POI=NO)
+  - Kulc: 0.510, Confidence: 68.79%, Lift: 1.08, Support: 0.2122, Score: 0.235
+
+IF (HAS_POI=YES) THEN (SUSP_SEX=M)
+  - Kulc: 0.499, Confidence: 59.99%, Lift: 1.11, Support: 0.2163, Score: 0.232
+
+IF (LAW_CAT=FELONY) THEN (HAS_POI=NO)
+  - Kulc: 0.498, Confidence: 66.09%, Lift: 1.03, Support: 0.2140, Score: 0.230
+
+IF (TIME_BUCKET=EVENING) THEN (HAS_POI=NO)
+  - Kulc: 0.482, Confidence: 65.00%, Lift: 1.02, Support: 0.2004, Score: 0.216
+
+IF (LOC_OF_OCCUR=FRONT) THEN (HAS_POI=NO)
+  - Kulc: 0.499, Confidence: 72.52%, Lift: 1.13, Support: 0.1748, Score: 0.209
+
+IF (VIC_RACE=BLACK) THEN (HAS_POI=NO)
+  - Kulc: 0.492, Confidence: 72.47%, Lift: 1.13, Support: 0.1657, Score: 0.200
+
+IF (TIME_BUCKET=AFTERNOON) THEN (LOC_OF_OCCUR=INSIDE)
+  - Kulc: 0.458, Confidence: 55.70%, Lift: 1.05, Support: 0.1906, Score: 0.200
+
+IF (BORO=BROOKLYN) THEN (HAS_POI=NO)
+  - Kulc: 0.466, Confidence: 65.09%, Lift: 1.02, Support: 0.1800, Score: 0.198
+
+IF (BORO=BRONX) THEN (HAS_POI=NO)
+  - Kulc: 0.493, Confidence: 73.57%, Lift: 1.15, Support: 0.1606, Score: 0.198
+
+IF (VIC_SEX=D) THEN (LOC_OF_OCCUR=INSIDE)
+  - Kulc: 0.529, Confidence: 81.23%, Lift: 1.53, Support: 0.1298, Score: 0.190
+
+IF (VIC_SEX=F) THEN (DIST_BIN=250-1000m)
+  - Kulc: 0.454, Confidence: 49.09%, Lift: 1.17, Support: 0.1742, Score: 0.189
+
+IF (SUSP_RACE=WHITE HISPANIC) THEN (SUSP_SEX=M)
+  - Kulc: 0.497, Confidence: 77.03%, Lift: 1.42, Support: 0.1220, Score: 0.174
+
+IF (VIC_SEX=E) THEN (SUSP_SEX=M)
+  - Kulc: 0.496, Confidence: 77.55%, Lift: 1.43, Support: 0.1181, Score: 0.171
+
+IF (BORO=QUEENS) THEN (HAS_POI=NO)
+  - Kulc: 0.439, Confidence: 65.21%, Lift: 1.02, Support: 0.1447, Score: 0.167
+
+IF (VIC_AGE=45-64) THEN (HAS_POI=NO)
+  - Kulc: 0.460, Confidence: 72.55%, Lift: 1.13, Support: 0.1240, Score: 0.162
+
+IF (VIC_RACE=WHITE HISPANIC) THEN (HAS_POI=NO)
+  - Kulc: 0.451, Confidence: 71.18%, Lift: 1.11, Support: 0.1222, Score: 0.158
+
+IF (TIME_BUCKET=MORNING) THEN (LOC_OF_OCCUR=INSIDE)
+  - Kulc: 0.435, Confidence: 63.17%, Lift: 1.19, Support: 0.1259, Score: 0.154
+
+IF (LAW_CAT=VIOLATION) THEN (HAS_POI=NO)
+  - Kulc: 0.443, Confidence: 71.26%, Lift: 1.11, Support: 0.1109, Score: 0.148
+

@@ -1,0 +1,7 @@
+{
+  "classifier__n_estimators": 50,
+  "classifier__max_samples": 1.0,
+  "classifier__max_features": 1.0,
+  "classifier__bootstrap_features": false,
+  "classifier__bootstrap": true
+}

@@ -1,0 +1,71 @@
+--- Top-K Rules for Borough = MANHATTAN (135,051 records) ---
+
+IF (SUSP_SEX=M) THEN (DIST_BIN=<250m)
+  - Kulc: 0.719, Conf: 84.23%, Lift: 1.03, Support: 0.4870, Score: 0.502
+
+IF (LAW_CAT=MISDEMEANOR) THEN (DIST_BIN=<250m)
+  - Kulc: 0.696, Conf: 83.33%, Lift: 1.02, Support: 0.4569, Score: 0.470
+
+IF (LAW_CAT=MISDEMEANOR) THEN (LOC_OF_OCCUR=INSIDE)
+  - Kulc: 0.596, Conf: 61.94%, Lift: 1.04, Support: 0.3396, Score: 0.347
+
+IF (TIME_BUCKET=AFTERNOON) THEN (DIST_BIN=<250m)
+  - Kulc: 0.603, Conf: 83.24%, Lift: 1.02, Support: 0.3055, Score: 0.333
+
+IF (SUSP_RACE=BLACK) THEN (SUSP_SEX=M)
+  - Kulc: 0.630, Conf: 79.71%, Lift: 1.38, Support: 0.2671, Score: 0.325
+
+IF (HAS_POI=NO) THEN (LOC_OF_OCCUR=INSIDE)
+  - Kulc: 0.573, Conf: 62.14%, Lift: 1.05, Support: 0.3111, Score: 0.320
+
+IF (HAS_POI=YES) THEN (SUSP_SEX=M)
+  - Kulc: 0.571, Conf: 61.29%, Lift: 1.06, Support: 0.3061, Score: 0.316
+
+IF (VIC_SEX=D) THEN (DIST_BIN=<250m)
+  - Kulc: 0.617, Conf: 92.75%, Lift: 1.13, Support: 0.2500, Score: 0.308
+
+IF (SUSP_AGE=25-44) THEN (SUSP_SEX=M)
+  - Kulc: 0.606, Conf: 79.59%, Lift: 1.38, Support: 0.2408, Score: 0.297
+
+IF (VIC_SEX=F) THEN (LOC_OF_OCCUR=INSIDE)
+  - Kulc: 0.497, Conf: 66.47%, Lift: 1.12, Support: 0.1955, Score: 0.220
+
+IF (VIC_AGE=25-44) THEN (VIC_SEX=F)
+  - Kulc: 0.491, Conf: 49.68%, Lift: 1.69, Support: 0.1429, Score: 0.186
+
+IF (VIC_RACE=WHITE) THEN (DIST_BIN=<250m)
+  - Kulc: 0.507, Conf: 85.57%, Lift: 1.05, Support: 0.1293, Score: 0.182
+
+IF (VIC_AGE=25-44) THEN (VIC_SEX=M)
+  - Kulc: 0.483, Conf: 48.55%, Lift: 1.67, Support: 0.1396, Score: 0.181
+
+IF (SEASON=SUMMER AND SUSP_SEX=M) THEN (DIST_BIN=<250m)
+  - Kulc: 0.500, Conf: 84.30%, Lift: 1.03, Support: 0.1288, Score: 0.180
+
+IF (SEASON=AUTUMN AND SUSP_SEX=M) THEN (DIST_BIN=<250m)
+  - Kulc: 0.500, Conf: 84.41%, Lift: 1.03, Support: 0.1270, Score: 0.178
+
+IF (TIME_BUCKET=MORNING) THEN (LOC_OF_OCCUR=INSIDE)
+  - Kulc: 0.468, Conf: 69.30%, Lift: 1.17, Support: 0.1442, Score: 0.178
+
+IF (LAW_CAT=FELONY) THEN (HAS_POI=NO)
+  - Kulc: 0.427, Conf: 51.95%, Lift: 1.04, Support: 0.1676, Score: 0.175
+
+IF (SUSP_RACE=WHITE HISPANIC) THEN (SUSP_SEX=M)
+  - Kulc: 0.496, Conf: 78.63%, Lift: 1.36, Support: 0.1186, Score: 0.171
+
+IF (VIC_SEX=E) THEN (DIST_BIN=<250m)
+  - Kulc: 0.492, Conf: 84.05%, Lift: 1.03, Support: 0.1169, Score: 0.168
+
+IF (SEASON=SPRING) THEN (LOC_OF_OCCUR=INSIDE)
+  - Kulc: 0.431, Conf: 60.62%, Lift: 1.02, Support: 0.1519, Score: 0.168
+
+IF (SUSP_SEX=U) THEN (HAS_POI=NO)
+  - Kulc: 0.424, Conf: 54.04%, Lift: 1.08, Support: 0.1536, Score: 0.166
+
+IF (SEASON=WINTER AND SUSP_SEX=M) THEN (DIST_BIN=<250m)
+  - Kulc: 0.491, Conf: 84.45%, Lift: 1.03, Support: 0.1121, Score: 0.164
+
+IF (TIME_BUCKET=EVENING) THEN (HAS_POI=NO)
+  - Kulc: 0.406, Conf: 51.41%, Lift: 1.03, Support: 0.1492, Score: 0.157
+
