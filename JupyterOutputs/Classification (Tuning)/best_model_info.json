@@ -1,3 +1,4 @@
 {
-  "best_model_name": "LogisticRegression"
+  "best_model_name": "LogisticRegression",
+  "optimal_threshold": 0.64
 }
