@@ -1,3 +1,2 @@
-- Sistemare pattern a analysis (md e codice)
-- Rimuovere il codice inutile
+s- Rimuovere il codice inutile
 - inserire waterfall plot per shap
