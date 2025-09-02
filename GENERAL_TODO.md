@@ -5,3 +5,4 @@
 - e nella readme info sulla struttura della repo e tutto il resto
 - su LaTeX direttamente le due user guide, semplicemente una spiegazione per l'utente con le info sull'explainability e tutto il resto
 - aggiungere eda all'inizio del preprocessing
+- inserire waterfall plot per shap
