@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Police Intelligence Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="logo_police.png" />
+  <link rel="apple-touch-icon" href="logo_police.png" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <img src="logo_police.png" alt="Police Logo" class="logo" />
+      <h1>NYPD Police Intelligence Dashboard</h1>
+    </div>
+    <div class="meta">
+      <button id="open-pattern-modal" class="btn cta" title="Open Pattern Analysis">Pattern Analysis</button>
+      <div id="last-updated" class="last-updated" title="Multidimensional analysis timestamp">Analysis: —</div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="map-pane">
+      <div class="pane-title">
+        <h2>Spatio-Temporal Hotspots</h2>
+        <div class="pane-actions">
+          <button id="reload-map" class="btn" title="Reload map">Reload</button>
+        </div>
+      </div>
+      <div class="map-frame-wrap">
+        <!-- Note: relative path assumes opening index.html from the repo root via HTTP server -->
+        <iframe id="hotspot-map" class="map-frame" src="../../JupyterOutputs/Clustering%20(SpatialHotspots)/cluster_temporal_patterns_map.html" title="Hotspot Map (cluster temporal patterns)"></iframe>
+        <div class="map-fallback" id="map-fallback">
+          Can't load the map. Make sure
+          <code>JupyterOutputs/Clustering (SpatialHotspots)/cluster_temporal_patterns_map.html</code>
+          exists and relative paths are correct.
+        </div>
+      </div>
+    </section>
+
+    <aside class="intel-pane">
+      <div class="pane-title">
+        <h2>Operational Intelligence</h2>
+      </div>
+
+      <section class="cards" id="kpi-cards">
+        <!-- KPI cards injected by JS -->
+      </section>
+
+      <section class="intel-section">
+        <h3>Priority Patterns</h3>
+        <div id="priority-patterns" class="list"></div>
+      </section>
+
+      <section class="intel-section">
+        <h3>Recommendations</h3>
+        <ul id="recommendations" class="reco-list"></ul>
+      </section>
+
+      <!-- Pattern Analysis moved to modal -->
+
+    </aside>
+  </main>
+
+  <footer class="app-footer">
+  </footer>
+
+  <!-- Pattern Analysis Modal -->
+  <div id="pattern-modal" class="modal hidden" aria-hidden="true" role="dialog" aria-label="Pattern Analysis">
+    <div class="modal-backdrop" id="pattern-modal-dismiss"></div>
+    <div class="modal-dialog" role="document">
+      <div class="modal-header">
+        <h3>Pattern Analysis</h3>
+        <button class="icon-btn" id="pattern-modal-close" title="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="filters">
+          <div class="filter-group">
+            <div class="label">View</div>
+            <div class="chip-group" id="mode-chips"></div>
+          </div>
+          <div class="filter-group">
+            <div class="label">Borough</div>
+            <div class="chip-group" id="borough-chips"></div>
+          </div>
+          <div class="filter-group">
+            <div class="label">Time</div>
+            <div class="chip-group" id="time-chips"></div>
+          </div>
+        </div>
+        <div class="modal-sections">
+          <section class="intel-section collapsible" id="sec-global">
+            <h3>Global insights <span class="chevron">▾</span></h3>
+            <div class="collapsible-content"><div id="pa-global" class="list"></div></div>
+          </section>
+          <section class="intel-section collapsible" id="sec-borough">
+            <h3>Borough insights <span class="chevron">▾</span></h3>
+            <div class="collapsible-content"><div id="pa-borough" class="list"></div></div>
+          </section>
+          <section class="intel-section collapsible" id="sec-time">
+            <h3>Time-bucket insights <span class="chevron">▾</span></h3>
+            <div class="collapsible-content"><div id="pa-time" class="list"></div></div>
+          </section>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <small class="muted">Source: PatternAnalysis outputs (top rules, simplified wording)</small>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
