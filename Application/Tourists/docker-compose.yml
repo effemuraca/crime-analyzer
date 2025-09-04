@@ -1,0 +1,21 @@
+name: crime-analyzer
+
+services:
+  api:
+    build:
+      context: .
+    container_name: crime-analyzer-api
+    environment:
+      MODEL_PATH: "/workspace/JupyterOutputs/Classification (Final)/LogisticRegression_production_model.joblib"
+      OPTIMAL_THRESHOLD: "0.64"
+      PREPROCESSOR_PATH: "/workspace/JupyterOutputs/Classification (Preprocessing)/preprocessing_pipeline_general.joblib"
+      FEATURE_NAMES_PATH: "/workspace/JupyterOutputs/Classification (Preprocessing)/feature_names.json"
+      FINAL_PIPELINE_PATH: "/workspace/JupyterOutputs/Classification (Tuning)/LogisticRegression_final_pipeline.joblib"
+      PYTHONPATH: "/workspace/Notebooks/Classification/Utilities:/workspace"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../..:/workspace:ro
+      - .:/app
+    command: ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+
