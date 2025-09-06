@@ -49,7 +49,7 @@ class STKDEAndRiskLabelTransformer(BaseEstimator, TransformerMixin):
                         label_col_name: str = 'RISK_LEVEL_engineered') -> None:
         # Validate bandwidth parameters
         if hs <= 0:
-            raise ValueError("Spatial bandwidth 'hs' must be positive.")
+            raise ValueError("Spatial bandwidth (hs) must be positive.")
         if ht <= 0:
             raise ValueError("Temporal bandwidth (ht) must be positive.")
             
@@ -140,7 +140,7 @@ class STKDEAndRiskLabelTransformer(BaseEstimator, TransformerMixin):
         target_coords_deg = np.rad2deg(target_coords_rad)
         reference_coords_deg = np.rad2deg(reference_coords_rad)
 
-        # Project to meters (EPSG:3857)
+        # Project to meters
         transformer = Transformer.from_crs("epsg:4326", "epsg:3857", always_xy=True)
         target_x, target_y = transformer.transform(target_coords_deg[:,1], target_coords_deg[:,0])
         ref_x, ref_y = transformer.transform(reference_coords_deg[:,1], reference_coords_deg[:,0])
@@ -234,7 +234,7 @@ class STKDEAndRiskLabelTransformer(BaseEstimator, TransformerMixin):
         self.calculated_thresholds_ = self._calculate_dynamic_thresholds(stkde_intensities_train)
             
         self.n_classes_eff_ = len(self.calculated_thresholds_) + 1
-        self.n_classes_ = self.n_classes_eff_  # Add this line for sklearn compatibility
+        self.n_classes_ = self.n_classes_eff_ 
         self.fitted_ = True
         return self
 
@@ -374,7 +374,7 @@ class TargetEngineeringPipeline(BaseEstimator, TransformerMixin):
                 if estimator_name in nested_params:
                     nested_params[estimator_name][param_name] = value
                 else:
-                    my_params[key] = value # Or raise an error for unknown estimator
+                    my_params[key] = value
             else:
                 my_params[key] = value
         
@@ -434,11 +434,10 @@ def cyclical_transform(X):
                 raise ValueError(
                     f"Invalid DAY values found for some MONTHs:\n{bad_rows}"
                 )
-            # valid_range non serve più qui
         else:
             raise ValueError(f"Unknown cyclical column: {col}")
 
-        if col != 'DAY':  # Per DAY il controllo è già stato fatto sopra
+        if col != 'DAY': 
             if not ((num_val >= valid_range[0]) & (num_val <= valid_range[1])).all():
                 raise ValueError(
                     f"Values of '{col}' must be in [{valid_range[0]}, {valid_range[1]}], "
