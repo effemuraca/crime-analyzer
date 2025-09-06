@@ -4,5 +4,4 @@ CARLO:
 - e nella readme info sulla struttura della repo e tutto il resto
 
 FERDI:
-- rivedere md e commenti della parte generale
 - rivedere md e commenti della parte di classificazione
