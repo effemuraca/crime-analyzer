@@ -8,5 +8,5 @@
     "mcc": 0.3519388253311341,
     "log_loss": 0.23829941506521646,
     "optimal_threshold": 0.64,
-    "training_duration_seconds": 130.4265639781952
+    "training_duration_seconds": 38.343876361846924
 }

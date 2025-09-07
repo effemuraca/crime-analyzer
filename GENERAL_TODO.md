@@ -7,5 +7,4 @@ CARLO:
 - riguardare classificazione
 
 FERDI:
-- rivedere md e commenti della parte di classificazione
 - riguardare clustering
