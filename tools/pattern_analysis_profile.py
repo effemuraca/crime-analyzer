@@ -280,7 +280,6 @@ def build_profile(df: pd.DataFrame) -> Dict[str, Any]:
         'numeric_other_missing': [c for c in EXPECTED_NUMERIC_OTHER if c not in df.columns],
     }
 
-    # Dtypes snapshot
     dtypes_map = {c: str(dt) for c, dt in df.dtypes.items()}
 
     # Numeric stats for all numeric-like columns (auto-detected)
@@ -380,7 +379,6 @@ def write_category_value_counts(path: Path, df: pd.DataFrame, max_uniques: int =
 
 
 def find_default_input() -> Optional[Path]:
-    # Prefer repo-root relative JupyterOutputs path
     cand = Path('JupyterOutputs') / 'Final' / 'final_crime_data.csv'
     return cand if cand.exists() else None
 
@@ -404,7 +402,7 @@ def main():
     print(f'Reading: {input_path}')
     df = pd.read_csv(input_path, low_memory=False)
 
-    # YEAR filter like the notebook
+    # YEAR filter as in the notebook
     if args.year and 'YEAR' in df.columns:
         pre = len(df)
         df = df[df['YEAR'] == int(args.year)].copy()
