@@ -1,5 +1,5 @@
 {
-  "export_timestamp": "2025-07-31T23:37:26.794698",
+  "export_timestamp": "2025-09-08T10:49:33.762868",
   "shape": "(2493835, 44)",
   "columns": [
     "BORO_NM",
@@ -139,8 +139,5 @@
     "SAME_SEX": "0",
     "TO_CHECK_CITIZENS": "0"
   },
-  "memory_usage_mb": 2738.7419118881226,
-  "quality_score": 99.96114418155172,
-  "validation_passed": true,
-  "validation_issues": []
+  "memory_usage_mb": 2738.7419118881226
 }
