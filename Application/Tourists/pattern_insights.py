@@ -9,16 +9,16 @@ REPO_ROOT = os.path.abspath(os.path.join(HERE, ".."))
 
 
 def _resolve_output_dir() -> str:
-    # 1) Explicit env override
+    # Explicit env override
     env_dir = os.getenv("PATTERN_OUTPUT_DIR")
     candidates = []
     if env_dir:
         candidates.append(env_dir)
-    # 2) Preferred workspace mount used by docker-compose
+    # Preferred workspace mount used by docker-compose
     candidates.append(os.path.join("/workspace", "JupyterOutputs", "PatternAnalysis"))
-    # 3) Repo-root relative (works when running without container and cwd is project root)
+    # Repo-root relative (works when running without container and cwd is project root)
     candidates.append(os.path.join(REPO_ROOT, "JupyterOutputs", "PatternAnalysis"))
-    # 4) Local dev fallback: try two levels up (if Application/ nested deeper)
+    # Local dev fallback: try two levels up (if Application/ nested deeper)
     candidates.append(os.path.abspath(os.path.join(HERE, "..", "..", "JupyterOutputs", "PatternAnalysis")))
 
     for d in candidates:
@@ -96,9 +96,7 @@ def _simplify_rule(r: Dict[str, Any]) -> Dict[str, Any]:
         "support": r.get("support"),
         "confidence": r.get("confidence"),
         "lift": r.get("lift"),
-    "leverage": r.get("leverage"),
-    "conviction": r.get("conviction"),
-    "zhangs_metric": r.get("zhangs_metric"),
+        "conviction": r.get("conviction"),
         "score": r.get("score"),
         "text": text,
         "context": r.get("context"),
