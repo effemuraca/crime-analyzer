@@ -9,7 +9,7 @@ FastAPI service for tourist-oriented crime risk predictions using the final Logi
     - label: HIGH_RISK | LOW_RISK
     - confidence: float (positive class probability)
     - threshold: float
-    - explanations.top_features: array of { feature, shap }
+    - explanations.top_features: array of { feature, contribution }
     - trends.neighborhood: top rules for the input borough (BORO_NM)
     - trends.time_bucket: top rules for the input time bucket (TIME_BUCKET)
 
@@ -18,7 +18,7 @@ For batch, the endpoint returns: `{ "count": number, "results": [<single-record-
 ## Request schema
 
 Single record fields (all required):
-- BORO_NM: string
+- BORO_NM: string (e.g., BRONX | BROOKLYN | MANHATTAN | QUEENS | STATEN ISLAND)
 - LOC_OF_OCCUR_DESC: string
 - VIC_AGE_GROUP: string
 - VIC_RACE: string
@@ -47,8 +47,8 @@ Single record fields (all required):
 - IS_WEEKEND: integer 0/1
 - MONTH: integer [1..12]
 - YEAR: integer
-- SEASON: string
-- TIME_BUCKET: string
+- SEASON: string (e.g., SPRING | SUMMER | FALL | WINTER)
+- TIME_BUCKET: string (e.g., MORNING | AFTERNOON | EVENING | NIGHT)
 - IS_HOLIDAY: integer 0/1
 - IS_PAYDAY: integer 0/1
 
@@ -57,7 +57,7 @@ Batch payload: `{ "records": [<InputRecord>, ...] }`.
 ## Run with Docker
 
 - Prerequisites: Docker Desktop
-- From `Application/` run:
+- From `Application/Tourists` run:
 
 ```powershell
 docker compose up --build
@@ -75,7 +75,8 @@ Environment overrides: `MODEL_PATH`, `PREPROCESSOR_PATH`, `FEATURE_NAMES_PATH`, 
 
 ## Example requests
 
-Single record:
+PowerShell (single record):
+
 ```powershell
 $body = @{
   BORO_NM = "BROOKLYN"
@@ -108,7 +109,7 @@ $body = @{
   MONTH = 5
   YEAR = 2023
   SEASON = "SPRING"
-  TIME_BUCKET = "DAY"
+  TIME_BUCKET = "AFTERNOON"
   IS_HOLIDAY = 0
   IS_PAYDAY = 0
 } | ConvertTo-Json
@@ -116,9 +117,19 @@ $body = @{
 Invoke-RestMethod -Method Post -Uri http://localhost:8000/api/v1/predict -ContentType 'application/json' -Body $body | ConvertTo-Json -Depth 6
 ```
 
-Batch:
+curl (single record):
+
+```bash
+curl -X POST "http://localhost:8000/api/v1/predict" ^
+  -H "Content-Type: application/json" ^
+  -d "{\"BORO_NM\":\"BROOKLYN\",\"LOC_OF_OCCUR_DESC\":\"OUTSIDE\",\"VIC_AGE_GROUP\":\"25-44\",\"VIC_RACE\":\"WHITE\",\"VIC_SEX\":\"M\",\"Latitude\":40.6782,\"Longitude\":-73.9442,\"BAR_DISTANCE\":120,\"NIGHTCLUB_DISTANCE\":500,\"ATM_DISTANCE\":80,\"ATMS_COUNT\":2,\"BARS_COUNT\":3,\"BUS_STOPS_COUNT\":1,\"METROS_COUNT\":0,\"NIGHTCLUBS_COUNT\":0,\"SCHOOLS_COUNT\":1,\"METRO_DISTANCE\":300,\"MIN_POI_DISTANCE\":30,\"AVG_POI_DISTANCE\":150,\"MAX_POI_DISTANCE\":600,\"TOTAL_POI_COUNT\":7,\"POI_DIVERSITY\":4,\"POI_DENSITY_SCORE\":0.45,\"HOUR\":13,\"DAY\":15,\"WEEKDAY\":\"MONDAY\",\"IS_WEEKEND\":0,\"MONTH\":5,\"YEAR\":2023,\"SEASON\":\"SPRING\",\"TIME_BUCKET\":\"AFTERNOON\",\"IS_HOLIDAY\":0,\"IS_PAYDAY\":0}"
+```
+
+PowerShell (batch):
+
 ```powershell
-$batch = @{ records = @(@{ BORO_NM = "BROOKLYN"; LOC_OF_OCCUR_DESC = "OUTSIDE"; VIC_AGE_GROUP = "25-44"; VIC_RACE = "WHITE"; VIC_SEX = "M"; Latitude = 40.6782; Longitude = -73.9442; BAR_DISTANCE = 120; NIGHTCLUB_DISTANCE = 500; ATM_DISTANCE = 80; ATMS_COUNT = 2; BARS_COUNT = 3; BUS_STOPS_COUNT = 1; METROS_COUNT = 0; NIGHTCLUBS_COUNT = 0; SCHOOLS_COUNT = 1; METRO_DISTANCE = 300; MIN_POI_DISTANCE = 30; AVG_POI_DISTANCE = 150; MAX_POI_DISTANCE = 600; TOTAL_POI_COUNT = 7; POI_DIVERSITY = 4; POI_DENSITY_SCORE = 0.45; HOUR = 13; DAY = 15; WEEKDAY = "MONDAY"; IS_WEEKEND = 0; MONTH = 5; YEAR = 2023; SEASON = "SPRING"; TIME_BUCKET = "DAY"; IS_HOLIDAY = 0; IS_PAYDAY = 0 } ) } | ConvertTo-Json
+$batch = @{ records = @(
+  @{ BORO_NM = "BROOKLYN"; LOC_OF_OCCUR_DESC = "OUTSIDE"; VIC_AGE_GROUP = "25-44"; VIC_RACE = "WHITE"; VIC_SEX = "M"; Latitude = 40.6782; Longitude = -73.9442; BAR_DISTANCE = 120; NIGHTCLUB_DISTANCE = 500; ATM_DISTANCE = 80; ATMS_COUNT = 2; BARS_COUNT = 3; BUS_STOPS_COUNT = 1; METROS_COUNT = 0; NIGHTCLUBS_COUNT = 0; SCHOOLS_COUNT = 1; METRO_DISTANCE = 300; MIN_POI_DISTANCE = 30; AVG_POI_DISTANCE = 150; MAX_POI_DISTANCE = 600; TOTAL_POI_COUNT = 7; POI_DIVERSITY = 4; POI_DENSITY_SCORE = 0.45; HOUR = 13; DAY = 15; WEEKDAY = "MONDAY"; IS_WEEKEND = 0; MONTH = 5; YEAR = 2023; SEASON = "SPRING"; TIME_BUCKET = "AFTERNOON"; IS_HOLIDAY = 0; IS_PAYDAY = 0 }
+) } | ConvertTo-Json
 
 Invoke-RestMethod -Method Post -Uri http://localhost:8000/api/v1/predict -ContentType 'application/json' -Body $batch | ConvertTo-Json -Depth 6
-```

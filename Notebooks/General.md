@@ -10,22 +10,24 @@ This document provides a structured index for each notebook in the General folde
 
 ### Sections:
 1. **Setup**
-   - Mount Google Drive
-   - Import base libraries (pandas, numpy, os, warnings)
-   - Define dataset paths
+   - Import base libraries (pandas, numpy, os, warnings, matplotlib, seaborn)
+   - Define dataset paths for historic and year-to-date datasets
+   - Configure output directories
 
 2. **Data Loading and Merging**
-   - Load NYPD historical dataset
-   - Load current year dataset
-   - Align columns
-   - Concatenate datasets
+   - Load NYPD historical dataset from `JupyterOutputs/Raw/NYPD_Complaint_Data_Historic_*.csv`
+   - Load current year dataset from `JupyterOutputs/Raw/NYPD_Complaint_Data_Current__Year_To_Date__*.csv`
+   - Align columns between datasets (handle missing columns with NaN)
+   - Concatenate datasets with proper indexing
+   - Convert CMPLNT_FR_DT to datetime format
    - Filter for dates from 2020 onwards
-   - Save unified dataset
+   - Save unified dataset to `JupyterOutputs/Merged/NYPD_Complaints_Merged.csv`
 
 3. **Data Quality Check**
-   - Verify unified dataset structure
-   - Check for duplicates
-   - Preliminary size analysis
+   - Verify unified dataset structure and column alignment
+   - Check for duplicates and data integrity
+   - Preliminary size analysis and shape validation
+   - Export to `JupyterOutputs/PrePreProcessed/cleaned_crime_data.csv`
 
 ---
 
@@ -35,53 +37,60 @@ This document provides a structured index for each notebook in the General folde
 
 ### Sections:
 1. **Setup**
-   - Mount Google Drive
    - Import libraries (pandas, numpy, matplotlib, seaborn, warnings, re, datetime, Counter)
-   - Define helper functions for analysis
+   - Import sklearn utilities (Pipeline, StandardScaler, LabelEncoder, SimpleImputer)
+   - Configure environment and suppress warnings
 
-2. **Data Loading & Initial Analysis**
-   - Load unified dataset
-   - Initial structural analysis
-   - Identify problematic columns
+2. **Helper Functions**
+   - `analyze_missing_values()`: Comprehensive missing values analysis with percentages
+   - `detect_placeholder_values()`: Detect common placeholder values ('NA', 'NULL', 'UNKNOWN', etc.)
+   - `detect_string_anomalies()`: Identify empty strings, whitespace, and special characters
+   - Define analysis utilities for data profiling
 
-3. **Missing Values Analysis**
-   - Comprehensive missing values analysis
+3. **Data Loading & Initial Analysis**
+   - Load unified dataset from `JupyterOutputs/PrePreProcessed/cleaned_crime_data.csv`
+   - Initial structural analysis and data validation
+   - Identify problematic columns and data quality issues
+
+4. **Missing Values Analysis**
+   - Comprehensive missing values analysis with helper functions
    - Missing values pattern visualizations
-   - Management strategies for each column
+   - Management strategies for each column type
 
-4. **Data Type Optimization**
-   - Convert to appropriate data types
-   - Memory optimization
-   - Handle dates and timestamps
+5. **Data Type Optimization**
+   - Convert to appropriate data types for memory efficiency
+   - Memory optimization and data type validation
+   - Handle dates and timestamps properly
 
-5. **Categorical Data Cleaning**
-   - Standardize categories
-   - Handle inconsistent values
-   - Preliminary mapping and encoding
+6. **Categorical Data Cleaning**
+   - Standardize categories to uppercase
+   - Handle inconsistent values and placeholder detection
+   - Preliminary mapping and encoding strategies
 
-6. **Geographical Data Cleaning**
-   - Validate geographical coordinates
-   - Correct anomalous lat/long values
-   - Handle missing spatial data
+7. **Geographical Data Cleaning**
+   - Validate geographical coordinates (Latitude, Longitude)
+   - Correct anomalous lat/long values outside NYC bounds
+   - Handle missing spatial data with appropriate strategies
 
-7. **Temporal Data Cleaning**
-   - Parse and validate dates
-   - Handle temporal inconsistencies
-   - Create base temporal features
+8. **Temporal Data Cleaning**
+   - Parse and validate dates using datetime functions
+   - Handle temporal inconsistencies and invalid dates
+   - Create base temporal features for analysis
 
-8. **Outlier Detection & Treatment**
-   - Identify statistical outliers
-   - Analyze geographical outliers
-   - Treatment strategies
+9. **Outlier Detection & Treatment**
+   - Identify statistical outliers in numerical features
+   - Analyze geographical outliers outside expected ranges
+   - Treatment strategies for different outlier types
 
-9. **Data Validation & Quality Assurance**
-   - Final integrity checks
-   - Validate business rules
-   - Data quality report
+10. **Data Validation & Quality Assurance**
+    - Final integrity checks and validation rules
+    - Validate business rules and data consistency
+    - Generate comprehensive data quality report
 
-10. **Export Cleaned Data**
-    - Save cleaned dataset
-    - Document transformations
+11. **Export Cleaned Data**
+    - Save cleaned dataset to `JupyterOutputs/Processed/cleaned_crime_data_processed.csv`
+    - Document all applied transformations and cleaning steps
+   - Downstream notebooks expect final dataset at `JupyterOutputs/Final/final_crime_data.csv`
 
 ---
 
@@ -91,29 +100,46 @@ This document provides a structured index for each notebook in the General folde
 
 ### Sections:
 1. **Setup**
-   - Mount Google Drive
-   - Import base libraries (pandas, numpy, os, warnings)
-   - Define cleaned data paths
+   - Import base libraries (pandas, numpy, os, warnings, json)
+   - Define paths for processed data and output directories
+   - Configure integration workflow
 
 2. **Load Cleaned Data**
-   - Load cleaned crime dataset
-   - Perform basic data validation
-   - Display dataset overview and statistics
+   - Load cleaned crime dataset from `JupyterOutputs/Processed/cleaned_crime_data_processed.csv`
+   - Perform basic data validation and error handling
+   - Display dataset overview, statistics, and sample data
 
-3. **Data Integration – Enrichment with OpenStreetMap POI**
-   - Construction of spatial grid and POI extraction from OSM
-   - Spatial feature generation (distance and density features)
-   - Integration with bars, nightclubs, ATMs, metro stations, schools
+3. **OSM-based Spatial Enrichment Design**
+   - **Projection**: EPSG:32618 (UTM 18N) for meter-accurate distances
+   - **Context Unit**: Regular 100m grid to avoid MAUP bias
+   - **POI Sets**: Bars, nightclubs, ATMs, bus stops, metro/train stations, schools
+   - **Features**: Distances to nearest POI by type (meters), counts per grid cell
+   - **Tooling**: QGIS + QuickOSM + NNJoin workflow
+   - **Reproducibility**: Enriched table exported as CSV for notebook consumption
 
-4. **Data Processing and Feature Engineering**
+4. **Data Integration Process**
+   - Load QGIS-enriched dataset from `JupyterOutputs/DataIntegrated/integrated_crime_data.csv`
+   - Validate spatial and POI features from external enrichment
+   - Standardize columns and create model-agnostic derived features
    - Intelligent column detection and validation
-   - Basic feature engineering (distance aggregations, density metrics)
-   - Safe column standardization and data validation
 
-5. **Export Integrated Data**
-   - Final validation and quality checks
-   - Save cleaned integrated dataset
-   - Create processing log and documentation
+5. **Spatial Feature Validation**
+   - Validate POI distance features (BAR_DISTANCE, NIGHTCLUB_DISTANCE, etc.)
+   - Check POI count features (ATMS_COUNT, BARS_COUNT, etc.)
+   - Assess spatial context features and density metrics
+   - Ensure geographic coordinate consistency
+
+6. **Feature Processing and Aggregation**
+   - Basic feature engineering for distance aggregations
+   - Density metrics calculation and validation
+   - Safe column standardization with error handling
+   - Data validation and quality checks
+
+7. **Export Integrated Data**
+   - Final validation and comprehensive quality checks
+   - Save cleaned integrated dataset to `JupyterOutputs/DataIntegrated/cleaned_integrated_crime_data.csv`
+   - Create processing log at `JupyterOutputs/DataIntegrated/integration_processing_log.json`
+   - Document integration methodology and reproducibility notes
 
 ---
 
@@ -123,127 +149,163 @@ This document provides a structured index for each notebook in the General folde
 
 ### Sections:
 1. **Setup**
-   - Import ML libraries (sklearn, pandas, numpy)
-   - Import specialized libraries (holidays, openpyxl)
-   - Configure preprocessing pipeline
+   - Import ML libraries (sklearn preprocessing, pipelines, feature_selection)
+   - Import specialized libraries (holidays, openpyxl for PD code mapping)
+   - Import feature engineering utilities (OneHotEncoder, StandardScaler, PCA, etc.)
+   - Configure preprocessing pipeline and transformers
 
-2. **Load Integrated Data**
-   - Load integrated dataset
-   - Analyze existing feature structure
+2. **Path Configuration**
+   - Set up input path: `JupyterOutputs/DataIntegrated/cleaned_integrated_crime_data.csv`
+   - Configure PD codes mapping: `Documents/PDCode_PenalLaw.xlsx`
+   - Set output path: `JupyterOutputs/FeatureEngineered/feature_engineered_crime_data.csv`
+   - Validate file existence and create directories
 
-3. **Temporal Feature Engineering**
-   - Extract temporal features (hour, weekday, month, season)
-   - Cyclical encoding for temporal variables
-   - Weekend/holiday features
-   - Custom time buckets
+3. **Load Integrated Data**
+   - Load integrated dataset with comprehensive validation
+   - Analyze existing feature structure and data quality
+   - Perform initial data profiling and validation
 
-4. **Demographic Feature Engineering**
-   - Suspect-victim interaction features
-   - Advanced demographic encoding
-   - Matching features (age, gender)
+4. **Offense Description Enhancement**
+   - Impute OFNS_DESC from PD_CD using official codebook mapping
+   - Handle '(NULL)' values with official crime code descriptions
+   - Validate and standardize offense descriptions
 
-5. **Geographical Feature Engineering**
-   - Geographical density features
-   - Spatial clustering
-   - Advanced proximity features
-   - Area-based aggregations
+5. **Temporal Feature Engineering**
+   - Extract temporal features from CMPLNT_FR_DT/CMPLNT_FR_TM (HOUR, WEEKDAY, SEASON)
+   - Create TIME_BUCKET for period-of-day analysis
+   - Cyclical encoding for temporal variables using custom transformers
+   - Holiday features using holidays.us library
+   - Payday features with heuristics (1st/15th of month)
 
-6. **Categorical Encoding**
-   - One-Hot Encoding for nominal categories
-   - Ordinal Encoding for ordinal categories
-   - Target Encoding when appropriate
+6. **Demographic Feature Engineering**
+   - Suspect-victim interaction features (SAME_AGE_GROUP, SAME_SEX)
+   - Advanced demographic encoding with robust placeholder handling
+   - Age group and demographic standardization
+   - Interaction flags for demographic analysis
 
-7. **Feature Scaling & Normalization**
-   - StandardScaler for numerical features
-   - RobustScaler for features with outliers
-   - MinMaxScaler when needed
+7. **Location and Spatial Feature Engineering**
+   - Location enrichment using distance-based imputation
+   - PREM_TYP_DESC imputation when nearest POI ≤ 30m
+   - Consolidate PARKS_NM into PREM_TYP_DESC
+   - Fallback rules for street crimes and public spaces
+   - Advanced proximity features and spatial context
 
-8. **Dimensionality Reduction**
-   - PCA for high-dimensional features
-   - Feature selection with mutual information
-   - Remove correlated features
+8. **Feature Transformation and Scaling**
+   - Categorical encoding strategies (OneHot, Ordinal)
+   - Numerical feature scaling (StandardScaler, MinMaxScaler, RobustScaler)
+   - Feature selection using SelectKBest and mutual information
+   - Remove correlated features to reduce multicollinearity
 
-9. **Pipeline Creation**
-   - Build complete ML pipeline
-   - Validate pipeline
-   - Export engineered features
+9. **Pipeline Creation and Validation**
+   - Build complete ML preprocessing pipeline
+   - Custom transformers integration and validation
+   - Pipeline testing and robustness checks
+   - Feature engineering validation
+
+10. **Export Engineered Features**
+    - Save feature-engineered dataset with comprehensive validation
+    - Export preprocessing artifacts and transformers
+    - Document feature engineering process and decisions
+    - Create feature metadata and documentation
 
 ---
 
 ## 5. VisualizationPreprocessing.ipynb
 
-**Objective:** Comprehensive visual analysis and ML insights
+**Objective:** Comprehensive visual analysis and publication-quality visualizations
 
 ### Sections:
-1. **Comprehensive Data Visualization Report**
-   - Feature engineering process overview
-   - Introduction to visualizations
+1. **Setup and Data Loading**
+   - Import visualization libraries (matplotlib, seaborn, folium, plotly)
+   - Import analysis libraries (scipy.stats, pandas, numpy)
+   - Configure plotting styles and parameters for publication quality
+   - Load final dataset from `JupyterOutputs/Final/final_crime_data.csv`
+   - Comprehensive data validation and quality summary
 
-2. **Feature Engineering Pipeline Summary**
-   - Temporal features summary
-   - Demographic features summary
-   - Geographical features summary
-   - Advanced preprocessing summary
+2. **Crime Type Distribution Analysis**
+   - Enhanced pie charts with inequality metrics (Gini coefficient)
+   - Crime type bar charts with Pareto analysis
+   - Distribution inequality analysis and dominance detection
+   - Export to `crime_types_pie_chart.png` and `crime_types_bar_chart.png`
 
-3. **Temporal Analysis Visualizations**
-   - Crime distribution by hour/day/month
-   - Seasonal patterns and temporal trends
-   - Temporal heatmaps
+3. **Location Analysis Visualizations**
+   - Crime location distribution with auto-adaptation to available columns
+   - Location-based pie charts and bar charts
+   - Geographic distribution analysis
+   - Export to `crime_location_pie_chart_*.png` and `crime_location_bar_chart_*.png`
 
-4. **Geographical Analysis Visualizations**
-   - Crime density maps
-   - Borough/precinct analysis
-   - POI and proximity visualizations
+4. **Temporal Analysis Visualizations**
+   - Crime trends over time with adaptive time resolution
+   - Seasonal patterns and temporal trends analysis
+   - Monthly and yearly distribution visualizations
+   - Export to `crime_trends_over_time.png` or `crime_by_month.png`
 
-5. **Categorical Analysis Visualizations**
-   - Crime type distributions
-   - Demographic analysis
-   - Cross-tabulations and correlations
+5. **Hourly and Daily Pattern Analysis**
+   - Crime distribution by hour with peak identification
+   - Day-hour heatmaps for spatio-temporal patterns
+   - Weekday patterns and temporal clustering
+   - Export to `crime_by_hour.png` and `crime_heatmap_day_hour.png`
 
-6. **Feature Correlation Analysis**
-   - Correlation matrix
-   - Feature importance plots
-   - Multicollinearity analysis
+6. **Interactive Spatial Visualizations**
+   - Geographic crime density maps using Folium
+   - Interactive heatmaps with HeatMap plugin
+   - Enhanced spatial visualizations with hotspot identification
+   - Export to `crime_heatmap.html`, `enhanced_crime_heatmap.html`, `hotspot_map.html`
 
-7. **ML Readiness Assessment**
-   - Feature distributions for ML
-   - Target variable balance check
-   - Final data quality report
+7. **Statistical Analysis and Insights**
+   - Chi-square contingency testing for categorical associations
+   - Distribution analysis with statistical significance testing
+   - Non-obvious insights discovery (Pareto effects, geographic hotspots)
+   - Comprehensive statistical reporting
+
+8. **Publication-Ready Output Generation**
+   - High-resolution figure export (300 DPI)
+   - Consistent styling and color schemes
+   - Auto-adaptive visualizations based on available columns
+   - Comprehensive error handling and safe fallbacks
+   - Output directory: `JupyterOutputs/VisualizationPreprocessing/`
 
 ---
 
 ## 6. DataFinal.ipynb
 
-**Objective:** Final dataset preparation for machine learning
+**Objective:** Final dataset preparation and validation for downstream analysis
 
 ### Sections:
 1. **Setup**
-   - Import final libraries
-   - Configure ML environment
+   - Import final libraries (pandas, numpy, matplotlib, seaborn, json)
+   - Import statistical libraries (scipy.stats) for validation testing
+   - Configure final environment for production dataset preparation
 
 2. **Load Feature Engineered Data**
-   - Load dataset with complete features
-   - Validate completeness
+   - Load dataset from `JupyterOutputs/FeatureEngineered/feature_engineered_crime_data.csv`
+   - Fallback to enhanced variant if primary artifact unavailable
+   - Comprehensive data validation and shape verification
+   - Memory usage analysis and optimization
 
 3. **Final Data Validation**
-   - Final quality checks
+   - Comprehensive quality checks and data integrity validation
    - Verify absence of critical missing values
-   - Validate feature distributions
+   - Validate feature distributions and data consistency
+   - Statistical validation of data quality
 
-4. **Train-Test Split Preparation**
-   - Temporal splitting strategies
-   - Class balancing if necessary
-   - Split validation
+4. **Data Export and Artifacts**
+   - Export final dataset to `JupyterOutputs/Final/final_crime_data.csv`
+   - Optional compression (.gz) for large datasets (>100MB)
+   - Generate dataset metadata in `JupyterOutputs/Final/final_dataset_metadata.json`
+   - Create sample dataset: `JupyterOutputs/Final/final_crime_data_sample_10000.csv`
 
-5. **Export ML-Ready Dataset**
-   - Save final dataset for ML
-   - Create feature metadata
-   - Final documentation
+5. **Final Dataset Documentation**
+   - Complete dataset summary with feature descriptions
+   - Data quality metrics and validation results
+   - Export statistics and metadata for reproducibility
+   - Final dataset preparation summary and recommendations
 
 6. **Pipeline Summary & Documentation**
-   - Complete preprocessing summary
-   - Final dataset metrics
-   - Modeling recommendations
+   - Complete preprocessing pipeline summary
+   - Final dataset metrics and characteristics
+   - Data lineage and transformation documentation
+   - Modeling readiness assessment and recommendations
 
 ---
 
