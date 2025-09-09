@@ -612,7 +612,7 @@ def _get_top_features_single(df_row: pd.DataFrame, top_n: int = 5) -> List[Dict[
 
         idx = np.argsort(-np.abs(contrib))[:max(1, int(top_n))]
         results = [
-            {"feature": str(names[i]), "shap": float(contrib[i])} for i in idx
+            {"feature": str(names[i]), "contribution": float(contrib[i])} for i in idx
         ]
         return results
     except Exception:
@@ -699,7 +699,7 @@ def root():
             "label": "HIGH_RISK | LOW_RISK",
             "confidence": "float in [0,1] for positive class",
             "threshold": "decision threshold used",
-            "explanations": {"top_features": "array of {feature, shap}"},
+            "explanations": {"top_features": "array of {feature, contribution}"},
             "trends": {
                 "neighborhood": "top rules for BORO_NM",
                 "time_bucket": "top rules for TIME_BUCKET",

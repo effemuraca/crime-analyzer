@@ -9,7 +9,7 @@ FastAPI service for tourist-oriented crime risk predictions using the final Logi
     - label: HIGH_RISK | LOW_RISK
     - confidence: float (positive class probability)
     - threshold: float
-    - explanations.top_features: array of { feature, shap }
+    - explanations.top_features: array of { feature, contribution }
     - trends.neighborhood: top rules for the input borough (BORO_NM)
     - trends.time_bucket: top rules for the input time bucket (TIME_BUCKET)
 
