@@ -57,7 +57,7 @@ Batch payload: `{ "records": [<InputRecord>, ...] }`.
 ## Run with Docker
 
 - Prerequisites: Docker Desktop
-- From `Application/` run:
+- From `Application/Tourists` run:
 
 ```powershell
 docker compose up --build
