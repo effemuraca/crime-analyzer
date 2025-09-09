@@ -12,13 +12,10 @@ What it is
 How to run (recommended)
 - Serve the repo root with a static server to avoid browser CORS limits on file://
 
-Option A: Python (from repo root)
+Python (from repo root)
   - PowerShell:
     - python -m http.server 8000
   - Then open: http://localhost:8000/Application/Police/index.html
-
-Option B: Any static HTTP server at repo root
-  - Ensure paths to JupyterOutputs are preserved
 
 Notes
 - Relative paths assume this directory structure is kept intact.
