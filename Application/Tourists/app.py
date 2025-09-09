@@ -736,7 +736,7 @@ def root():
             "MONTH": 5,
             "YEAR": 2023,
             "SEASON": "SPRING",
-            "TIME_BUCKET": "DAY",
+            "TIME_BUCKET": "MORNING",
             "IS_HOLIDAY": 0,
             "IS_PAYDAY": 0,
         },
