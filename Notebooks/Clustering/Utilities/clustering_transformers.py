@@ -1,20 +1,3 @@
-"""
-Custom transformers and utilities for crime hotspot clustering analysis.
-
-This module provides specialized transformers for spatial, temporal, and categorical features
-used in clustering-based crime hotspot detection. All transformers follow scikit-learn
-conventions and can be used in Pipeline objects.
-
-Key Transformers:
------------------
-- CyclicalTransformer: Convert temporal features (HOUR, WEEKDAY, MONTH, DAY) to sin/cos components
-- SpatialProjectionTransformer: Project lat/lon coordinates to meters (essential for DBSCAN/HDBSCAN)
-- LatLonToRadiansTransformer: Convert lat/lon to radians for angular distance calculations
-- FeatureSelector: Select and reorder features for consistent clustering input
-- SchemaValidator: Validate temporal column ranges before processing
-- PCATransformer: Dimensionality reduction wrapper with DataFrame output
-"""
-
 import logging
 import warnings
 from typing import Optional, Union, List, Tuple, Any, Dict
@@ -117,20 +100,6 @@ class SpatialProjectionTransformer(BaseEstimator, TransformerMixin):
     use Euclidean distance. Geographic coordinates (lat/lon) have non-uniform
     distances when using Euclidean calculations, so we need to project them
     to a metric coordinate system.
-    
-    Parameters:
-    -----------
-    crs : str, default="EPSG:32618"
-        Target coordinate reference system. Default is UTM 18N for NYC.
-        Alternative: "EPSG:3857" (Web Mercator) as fallback.
-    lat_col : str, default="Latitude"
-        Name of the latitude column.
-    lon_col : str, default="Longitude" 
-        Name of the longitude column.
-    out_cols : tuple, default=("X_METERS", "Y_METERS")
-        Names for the output projected coordinate columns.
-    drop_latlon : bool, default=False
-        Whether to drop the original lat/lon columns from output.
     """
     def __init__(self, crs="EPSG:32618", lat_col="Latitude", lon_col="Longitude",
                  out_cols=("X_METERS","Y_METERS"), drop_latlon=False):
@@ -192,17 +161,6 @@ class LatLonToRadiansTransformer(BaseEstimator, TransformerMixin):
     
     Useful for algorithms that work with angular coordinates or 
     when computing great circle distances.
-    
-    Parameters:
-    -----------
-    lat_col : str, default="Latitude"
-        Name of the latitude column.
-    lon_col : str, default="Longitude"
-        Name of the longitude column.
-    out_cols : tuple, default=("LAT_RADIANS", "LON_RADIANS")
-        Names for the output radian columns.
-    drop_original : bool, default=False
-        Whether to drop the original degree columns.
     """
     def __init__(self, lat_col="Latitude", lon_col="Longitude", 
                  out_cols=("LAT_RADIANS", "LON_RADIANS"), drop_original=False):
@@ -251,11 +209,6 @@ class FeatureSelector(BaseEstimator, TransformerMixin):
     
     Useful to ensure consistent feature ordering for clustering algorithms
     and to select only relevant features for the clustering task.
-    
-    Parameters:
-    -----------
-    feature_names : list
-        List of feature names to select and their desired order.
     """
     def __init__(self, feature_names):
         self.feature_names = feature_names
@@ -285,11 +238,6 @@ class SchemaValidator(BaseEstimator, TransformerMixin):
     
     Validates that HOUR, WEEKDAY, MONTH, DAY are in expected ranges
     before applying cyclical transformations.
-    
-    Parameters:
-    -----------
-    strict : bool, default=True
-        If True, raises errors for invalid values. If False, issues warnings.
     """
     def __init__(self, strict=True):
         self.strict = strict
@@ -364,13 +312,6 @@ class PCATransformer(BaseEstimator, TransformerMixin):
     
     Useful for dimensionality reduction before clustering,
     especially for high-dimensional categorical data after encoding.
-    
-    Parameters:
-    -----------
-    n_components : int, float or None, default=None
-        Number of components to keep. If None, keep all components.
-    **pca_kwargs : dict
-        Additional keyword arguments for sklearn PCA.
     """
     def __init__(self, n_components=None, **pca_kwargs):
         self.n_components = n_components
@@ -419,15 +360,6 @@ class CategoricalPreprocessor(BaseEstimator, TransformerMixin):
     
     Handles missing values, data type conversion, and feature validation
     specifically for categorical data used in K-Modes clustering.
-    
-    Parameters:
-    -----------
-    handle_missing : str, default='drop'
-        How to handle missing values:
-        - 'drop': Already handled in data preparation
-        - 'most_frequent': Fill with most frequent value
-    min_frequency : int or None, default=None
-        Minimum frequency threshold for categories (future enhancement)
     """
     def __init__(self, handle_missing='drop', min_frequency=None):
         self.handle_missing = handle_missing
@@ -481,13 +413,6 @@ class MCATransformer(BaseEstimator, TransformerMixin):
     This transformer applies MCA (Multiple Correspondence Analysis) to categorical data,
     reducing dimensionality while preserving the relationships between categories.
     Compatible with sklearn pipelines.
-    
-    Parameters
-    ----------
-    n_components : int, default=10
-        Number of components to keep after MCA transformation
-    random_state : int, default=42
-        Random state for reproducibility
     """
     
     def __init__(self, n_components=10, random_state=42):
@@ -542,15 +467,6 @@ class MixedFeaturePreprocessor(BaseEstimator, TransformerMixin):
     
     This transformer handles both categorical and numerical features, applying
     appropriate preprocessing to each type while maintaining pipeline compatibility.
-    
-    Parameters
-    ----------
-    max_categorical_features : int, default=20
-        Maximum number of categorical features to include
-    max_numerical_features : int, default=10
-        Maximum number of numerical features to include
-    categorical_strategy : str, default='drop'
-        Strategy for handling missing categorical values
     """
     
     def __init__(self, max_categorical_features=20, max_numerical_features=10, 
@@ -647,13 +563,6 @@ class CategoricalDimensionalityReducer(BaseEstimator, TransformerMixin):
     This transformer provides a robust alternative to MCA for categorical data
     dimensionality reduction. It uses OneHot encoding followed by PCA, which
     is more numerically stable and doesn't produce NaN values.
-    
-    Parameters
-    ----------
-    n_components : int, default=5
-        Number of components to keep after dimensionality reduction
-    random_state : int, default=42
-        Random state for reproducibility
     """
     
     def __init__(self, n_components=5, random_state=42):
@@ -731,32 +640,6 @@ class ColumnBinner(BaseEstimator, TransformerMixin):
     - kind='score'   : generic quantile bins
     - kind='quantile': explicit quantile-based binning
     - kind='cut'     : explicit pd.cut with bins/labels
-
-    Parameters
-    ----------
-    config : Dict[str, Dict]
-        Mapping from column name to its binning configuration. Example:
-        {
-          'METRO_DISTANCE': {
-             'kind': 'distance',
-             'bins': [-np.inf, 250, 1000, np.inf],
-             'labels': ['Near','Mid','Far']
-          },
-          # Example count column (generic *_COUNT):
-          'BARS_COUNT': {
-             'kind': 'count', 'quantiles': 4,
-             'labels': ['Low','Medium','High','VeryHigh'],
-             'zero_label': 'Zero'
-          },
-          'POI_DENSITY_SCORE': {
-             'kind': 'score', 'quantiles': 4,
-             'labels': ['Low','Medium','High','VeryHigh']
-          }
-        }
-    suffix : str, default="_BIN"
-        Suffix to append to original column names for the binned outputs.
-    fill_unknown : str, default="Unknown"
-        Label to use when values cannot be binned.
     """
 
     def __init__(self, config: Dict[str, Dict], suffix: str = "_BIN", fill_unknown: str = "Unknown"):
