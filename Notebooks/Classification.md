@@ -86,7 +86,7 @@ This document provides a structured approach for developing a binary crime risk 
    - **Data Validation**: Ensure label distribution and feature consistency
 
 4. **Model Configuration and Selection**
-   - **Baseline Models**: DummyClassifier, GaussianNB, LogisticRegression
+   - **Baseline Models**: DummyClassifier, LogisticRegression
    - **Tree-Based Models**: RandomForestClassifier, ExtraTreesClassifier, DecisionTreeClassifier
    - **Ensemble Methods**: BaggingClassifier, AdaBoostClassifier
    - **Gradient Boosting**: XGBClassifier, LGBMClassifier for enhanced performance
