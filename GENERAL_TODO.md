@@ -6,8 +6,7 @@ CARLO:
 - aggiorna clustering.md
 - fact checking sui paper citati
 - riguardare classificazione
+- levare emoticon
 
 FERDI:
-- riguardare clustering
-- rimuovi args e returns dalle funzioni
-- elimina le emoticon a giro
+- riguardare spatial, multidimensional
