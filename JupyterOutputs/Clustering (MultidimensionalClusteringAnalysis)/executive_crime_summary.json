@@ -1,0 +1,39 @@
+{
+  "analysis_date": "2025-09-11 02:30",
+  "total_crimes_analyzed": 10000,
+  "patterns_identified": 6,
+  "high_priority_patterns": 2,
+  "high_priority_crime_percentage": 38.8,
+  "most_concentrated_pattern_signature": "PETIT LARCENY - MANHATTAN - CHAIN STORE - AFTERNOON - Weekday - SUSP: M UNKNOWN | VIC: D UNKNOWN",
+  "highest_volume_pattern_signature": "PETIT LARCENY - MANHATTAN - CHAIN STORE - AFTERNOON - Weekday - SUSP: M UNKNOWN | VIC: D UNKNOWN",
+  "most_concentrated_pattern": {
+    "crime_type": "PETIT LARCENY",
+    "borough": "MANHATTAN",
+    "premises": "CHAIN STORE",
+    "time_bucket": "AFTERNOON",
+    "is_weekend_mode": false,
+    "is_holiday_mode": false,
+    "suspect_sex_mode": "M",
+    "suspect_age_mode": "UNKNOWN",
+    "victim_sex_mode": "D",
+    "victim_age_mode": "UNKNOWN",
+    "volume": 1985,
+    "concentration": "56%"
+  },
+  "highest_volume_pattern": {
+    "crime_type": "PETIT LARCENY",
+    "borough": "MANHATTAN",
+    "premises": "CHAIN STORE",
+    "time_bucket": "AFTERNOON",
+    "is_weekend_mode": false,
+    "is_holiday_mode": false,
+    "suspect_sex_mode": "M",
+    "suspect_age_mode": "UNKNOWN",
+    "victim_sex_mode": "D",
+    "victim_age_mode": "UNKNOWN",
+    "volume": 1985,
+    "concentration": "56%"
+  },
+  "immediate_deployment_needed": true,
+  "resource_focus_patterns": 3
+}

@@ -1,6 +1,6 @@
 import logging
 import warnings
-from typing import Optional, Union, List, Tuple, Any, Dict
+from typing import Dict
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import check_is_fitted
 from sklearn.decomposition import PCA
@@ -34,7 +34,8 @@ def cyclical_transform(X):
             period = 24.0
             valid_range = (0, period - 1)
         elif col == 'WEEKDAY':
-            if X[col].dtype == 'object' or pd.api.types.is_categorical_dtype(X[col].dtype):
+            # Treat object or pandas Categorical dtype as categorical weekday labels
+            if X[col].dtype == 'object' or isinstance(X[col].dtype, pd.CategoricalDtype):
                 num_val = X[col].map(weekday_map)
                 if num_val.isnull().any():
                     bad = X[col][num_val.isnull()].unique()
@@ -285,7 +286,8 @@ class SchemaValidator(BaseEstimator, TransformerMixin):
                         warnings.warn(message)
                         
             elif col == 'WEEKDAY':
-                if X[col].dtype == 'object' or pd.api.types.is_categorical_dtype(X[col].dtype):
+                # Treat object or pandas Categorical dtype as categorical weekday labels
+                if X[col].dtype == 'object' or isinstance(X[col].dtype, pd.CategoricalDtype):
                     invalid_mask = ~X[col].isin(weekday_valid)
                     
                     if invalid_mask.any():
@@ -381,22 +383,26 @@ class CategoricalPreprocessor(BaseEstimator, TransformerMixin):
         return self
         
     def transform(self, X, y=None):
-        """Transform categorical features for K-Modes clustering."""
+        """Transform categorical features for K-Modes clustering.
+
+        When handle_missing='drop', rows containing NaN in any processed column
+        are removed to ensure valid categorical inputs.
+        """
         X_processed = X.copy()
-        
+
         # Handle missing values
         if self.handle_missing == 'drop':
-            # Already handled in data preparation
-            pass
+            # Drop rows with any NaNs in the categorical columns
+            X_processed = X_processed.dropna(axis=0, how='any')
         elif self.handle_missing == 'most_frequent':
             for col in X_processed.columns:
                 most_frequent = self.category_stats_[col]['most_frequent']
                 X_processed[col] = X_processed[col].fillna(most_frequent)
-        
+
         # Ensure all values are strings (K-Modes requirement)
         for col in X_processed.columns:
             X_processed[col] = X_processed[col].astype(str)
-            
+
         return X_processed
     
     def get_feature_names_out(self, input_features=None):
@@ -478,6 +484,7 @@ class MixedFeaturePreprocessor(BaseEstimator, TransformerMixin):
         self.numerical_features_ = []
         self.categorical_preprocessor_ = None
         self.scaler_ = None
+        self._category_mappings_: Dict[str, Dict[str, int]] = {}
         
     def fit(self, X, y=None):
         """Fit the mixed feature preprocessor."""
@@ -490,7 +497,7 @@ class MixedFeaturePreprocessor(BaseEstimator, TransformerMixin):
         numerical_cols = []
         
         for col in X.columns:
-            if X[col].dtype == 'object' or pd.api.types.is_categorical_dtype(X[col]):
+            if X[col].dtype == 'object' or isinstance(X[col].dtype, pd.CategoricalDtype):
                 categorical_cols.append(col)
             else:
                 numerical_cols.append(col)
@@ -504,7 +511,18 @@ class MixedFeaturePreprocessor(BaseEstimator, TransformerMixin):
             self.categorical_preprocessor_ = CategoricalPreprocessor(
                 handle_missing=self.categorical_strategy
             )
-            self.categorical_preprocessor_.fit(X[self.categorical_features_])
+            X_cat = self.categorical_preprocessor_.fit_transform(X[self.categorical_features_])
+            # Build stable mappings from the fitted data
+            self._category_mappings_ = {}
+            for col in X_cat.columns:
+                # Preserve order of appearance for stability
+                seen = []
+                mapping: Dict[str, int] = {}
+                for val in X_cat[col].astype(str).tolist():
+                    if val not in mapping:
+                        mapping[val] = len(mapping)
+                        seen.append(val)
+                self._category_mappings_[col] = mapping
         
         # Fit numerical scaler if we have numerical features
         if self.numerical_features_:
@@ -522,15 +540,13 @@ class MixedFeaturePreprocessor(BaseEstimator, TransformerMixin):
         # Process categorical features
         if self.categorical_features_ and self.categorical_preprocessor_:
             cat_transformed = self.categorical_preprocessor_.transform(X[self.categorical_features_])
-            # For clustering, we need to encode categorical features
-            # Using simple ordinal encoding for each column
+            # Encode using stable mappings from fit; unseen -> -1
             cat_encoded = pd.DataFrame(index=cat_transformed.index)
-            
+
             for col in cat_transformed.columns:
-                unique_vals = cat_transformed[col].unique()
-                mapping = {val: i for i, val in enumerate(unique_vals)}
-                cat_encoded[f'{col}_encoded'] = cat_transformed[col].map(mapping)
-            
+                mapping = self._category_mappings_.get(col, {})
+                cat_encoded[f'{col}_encoded'] = cat_transformed[col].astype(str).map(mapping).fillna(-1).astype(int)
+
             transformed_parts.append(cat_encoded)
         
         # Process numerical features
@@ -577,7 +593,11 @@ class CategoricalDimensionalityReducer(BaseEstimator, TransformerMixin):
         
         # Fit one-hot encoder
         from sklearn.preprocessing import OneHotEncoder
-        self.encoder_ = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
+        # Support sklearn<1.2 (uses 'sparse' instead of 'sparse_output')
+        try:
+            self.encoder_ = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
+        except TypeError:
+            self.encoder_ = OneHotEncoder(sparse=False, handle_unknown='ignore')
         X_encoded = self.encoder_.fit_transform(X)
         
         # Fit PCA

@@ -1,0 +1,379 @@
+{
+  "best_parameters": {
+    "cluster__n_clusters": 3,
+    "cluster__n_init": 5,
+    "dimred__n_components": 3
+  },
+  "best_cv_score": 0.36639909531599574,
+  "final_metrics": {
+    "silhouette_score": 0.3728537914435986,
+    "n_clusters": 3,
+    "cluster_sizes": {
+      "0": 1099,
+      "1": 1097,
+      "2": 804
+    }
+  },
+  "detailed_results": [
+    {
+      "params": {
+        "cluster__n_clusters": 3,
+        "cluster__n_init": 5,
+        "dimred__n_components": 3
+      },
+      "cv_silhouette_mean": 0.36639909531599574,
+      "cv_silhouette_std": 0.015983616052885126,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 3,
+        "cluster__n_init": 10,
+        "dimred__n_components": 3
+      },
+      "cv_silhouette_mean": 0.36639909531599574,
+      "cv_silhouette_std": 0.015983616052885126,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 7,
+        "cluster__n_init": 10,
+        "dimred__n_components": 3
+      },
+      "cv_silhouette_mean": 0.3594665575329427,
+      "cv_silhouette_std": 0.03581918151294183,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 7,
+        "cluster__n_init": 5,
+        "dimred__n_components": 3
+      },
+      "cv_silhouette_mean": 0.3594665575329427,
+      "cv_silhouette_std": 0.03581918151294183,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 5,
+        "cluster__n_init": 5,
+        "dimred__n_components": 3
+      },
+      "cv_silhouette_mean": 0.35944712992787814,
+      "cv_silhouette_std": 0.02606376367550073,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 5,
+        "cluster__n_init": 10,
+        "dimred__n_components": 3
+      },
+      "cv_silhouette_mean": 0.3558079896980046,
+      "cv_silhouette_std": 0.021673097934745766,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 4,
+        "cluster__n_init": 5,
+        "dimred__n_components": 3
+      },
+      "cv_silhouette_mean": 0.3548354503022806,
+      "cv_silhouette_std": 0.019586576944499168,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 4,
+        "cluster__n_init": 10,
+        "dimred__n_components": 3
+      },
+      "cv_silhouette_mean": 0.3548354503022806,
+      "cv_silhouette_std": 0.019586576944499168,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 8,
+        "cluster__n_init": 10,
+        "dimred__n_components": 3
+      },
+      "cv_silhouette_mean": 0.3545401495719975,
+      "cv_silhouette_std": 0.028600872998747914,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 8,
+        "cluster__n_init": 5,
+        "dimred__n_components": 3
+      },
+      "cv_silhouette_mean": 0.35047014647075175,
+      "cv_silhouette_std": 0.03375974910797031,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 6,
+        "cluster__n_init": 10,
+        "dimred__n_components": 3
+      },
+      "cv_silhouette_mean": 0.34934053079247246,
+      "cv_silhouette_std": 0.030853767846943315,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 6,
+        "cluster__n_init": 5,
+        "dimred__n_components": 3
+      },
+      "cv_silhouette_mean": 0.3487884908573611,
+      "cv_silhouette_std": 0.030293061170759913,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 8,
+        "cluster__n_init": 10,
+        "dimred__n_components": 5
+      },
+      "cv_silhouette_mean": 0.2627930281376432,
+      "cv_silhouette_std": 0.010232744337686357,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 8,
+        "cluster__n_init": 5,
+        "dimred__n_components": 5
+      },
+      "cv_silhouette_mean": 0.2627930281376432,
+      "cv_silhouette_std": 0.010232744337686357,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 7,
+        "cluster__n_init": 5,
+        "dimred__n_components": 5
+      },
+      "cv_silhouette_mean": 0.259805472592676,
+      "cv_silhouette_std": 0.004751365544815151,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 7,
+        "cluster__n_init": 10,
+        "dimred__n_components": 5
+      },
+      "cv_silhouette_mean": 0.25902267295618703,
+      "cv_silhouette_std": 0.005457282335463395,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 3,
+        "cluster__n_init": 10,
+        "dimred__n_components": 5
+      },
+      "cv_silhouette_mean": 0.2502803017528037,
+      "cv_silhouette_std": 0.00809374370733106,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 3,
+        "cluster__n_init": 5,
+        "dimred__n_components": 5
+      },
+      "cv_silhouette_mean": 0.2502803017528037,
+      "cv_silhouette_std": 0.00809374370733106,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 5,
+        "cluster__n_init": 10,
+        "dimred__n_components": 5
+      },
+      "cv_silhouette_mean": 0.2486820271327013,
+      "cv_silhouette_std": 0.005324462384748616,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 6,
+        "cluster__n_init": 10,
+        "dimred__n_components": 5
+      },
+      "cv_silhouette_mean": 0.24742615992741715,
+      "cv_silhouette_std": 0.006831101160202501,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 5,
+        "cluster__n_init": 5,
+        "dimred__n_components": 5
+      },
+      "cv_silhouette_mean": 0.2439012938754761,
+      "cv_silhouette_std": 0.012984722108382427,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 6,
+        "cluster__n_init": 5,
+        "dimred__n_components": 5
+      },
+      "cv_silhouette_mean": 0.24372114931895317,
+      "cv_silhouette_std": 0.01123911154501639,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 4,
+        "cluster__n_init": 10,
+        "dimred__n_components": 5
+      },
+      "cv_silhouette_mean": 0.23926627796507802,
+      "cv_silhouette_std": 0.005039328118818107,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 4,
+        "cluster__n_init": 5,
+        "dimred__n_components": 5
+      },
+      "cv_silhouette_mean": 0.23905892466677028,
+      "cv_silhouette_std": 0.005177230273452602,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 7,
+        "cluster__n_init": 10,
+        "dimred__n_components": 8
+      },
+      "cv_silhouette_mean": 0.180737580998131,
+      "cv_silhouette_std": 0.004105297770414333,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 7,
+        "cluster__n_init": 5,
+        "dimred__n_components": 8
+      },
+      "cv_silhouette_mean": 0.180737580998131,
+      "cv_silhouette_std": 0.004105297770414333,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 3,
+        "cluster__n_init": 5,
+        "dimred__n_components": 8
+      },
+      "cv_silhouette_mean": 0.1792614956688916,
+      "cv_silhouette_std": 0.005646623797793721,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 8,
+        "cluster__n_init": 5,
+        "dimred__n_components": 8
+      },
+      "cv_silhouette_mean": 0.17920149289023843,
+      "cv_silhouette_std": 0.0013407165050926578,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 3,
+        "cluster__n_init": 10,
+        "dimred__n_components": 8
+      },
+      "cv_silhouette_mean": 0.17915544744412992,
+      "cv_silhouette_std": 0.005717859438242963,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 8,
+        "cluster__n_init": 10,
+        "dimred__n_components": 8
+      },
+      "cv_silhouette_mean": 0.17753733603181887,
+      "cv_silhouette_std": 0.001016708276039569,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 5,
+        "cluster__n_init": 10,
+        "dimred__n_components": 8
+      },
+      "cv_silhouette_mean": 0.17532648550819577,
+      "cv_silhouette_std": 0.0018485511019366936,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 5,
+        "cluster__n_init": 5,
+        "dimred__n_components": 8
+      },
+      "cv_silhouette_mean": 0.17532648550819577,
+      "cv_silhouette_std": 0.0018485511019366936,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 6,
+        "cluster__n_init": 5,
+        "dimred__n_components": 8
+      },
+      "cv_silhouette_mean": 0.17162642909566428,
+      "cv_silhouette_std": 0.004206577477324406,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 6,
+        "cluster__n_init": 10,
+        "dimred__n_components": 8
+      },
+      "cv_silhouette_mean": 0.17162642909566428,
+      "cv_silhouette_std": 0.004206577477324406,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 4,
+        "cluster__n_init": 5,
+        "dimred__n_components": 8
+      },
+      "cv_silhouette_mean": 0.17017472099310874,
+      "cv_silhouette_std": 0.0027521325752997506,
+      "n_successful_folds": 3
+    },
+    {
+      "params": {
+        "cluster__n_clusters": 4,
+        "cluster__n_init": 10,
+        "dimred__n_components": 8
+      },
+      "cv_silhouette_mean": 0.17017472099310874,
+      "cv_silhouette_std": 0.0027521325752997506,
+      "n_successful_folds": 3
+    }
+  ]
+}

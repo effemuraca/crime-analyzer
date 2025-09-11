@@ -1,0 +1,25 @@
+{
+  "K-Modes": {
+    "best_score": 0.15186763246766324,
+    "best_params": {
+      "cluster__init": "Huang",
+      "cluster__n_clusters": 6,
+      "cluster__n_init": 10
+    }
+  },
+  "CategoricalDimRed+KMeans": {
+    "best_score": 0.39844569077634573,
+    "best_params": {
+      "dimred__n_components": 3,
+      "cluster__n_clusters": 7,
+      "cluster__n_init": 5
+    }
+  },
+  "Spectral": {
+    "best_score": 0.04033790671030355,
+    "best_params": {
+      "cluster__n_clusters": 4,
+      "cluster__n_neighbors": 10
+    }
+  }
+}
