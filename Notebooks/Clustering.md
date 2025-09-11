@@ -1,12 +1,12 @@
 # Crime Hotspot Detection - Clustering Analysis
 
-This document provides a structured approach for identifying crime hotspots using clustering techniques. The primary objective is to discover spatial-temporal crime concentration patterns in NYC data.
+This document describes the three clustering notebooks and aligns their documentation with the implemented code. Goals: (1) pre-clustering tendency checks, (2) multidimensional pattern discovery across categorical/mixed features, and (3) spatial micro‑hotspot detection with temporal profiling.
 
 ---
 
 ## 1. ClusteringTendency.ipynb
 
-**Objective:** Pre-clustering validation for crime hotspot and categorical pattern analysis, assessing clustering tendency for both spatial and mixed-type features
+Objective: Pre‑clustering validation for crime hotspot and categorical pattern analysis, assessing clustering tendency for both spatio‑temporal and mixed‑type subspaces.
 
 ### Sections:
 1. **Setup**
@@ -16,8 +16,8 @@ This document provides a structured approach for identifying crime hotspots usin
    - Configure random seeds for reproducibility
 
 2. **Path Definition**
-   - Define paths for loading final preprocessed crime dataset
-   - Configure save directory for validation results
+   - Define paths for loading the feature‑engineered dataset
+   - Configure save directory for any optional artifacts
    - Load dataset from `JupyterOutputs/Final/final_crime_data.csv`
 
 3. **Data Loading & Validation**
@@ -27,45 +27,36 @@ This document provides a structured approach for identifying crime hotspots usin
    - Validate dataset completeness for clustering analysis
 
 4. **Clustering Tendency Assessment**
-   - **Hopkins Statistic Implementation**: Custom implementation for spatial-temporal features
-   - **Multi-repetition Stability**: Average Hopkins values over multiple repetitions
-   - **Robust Preprocessing**: Z-score standardization followed by min-max scaling
-   - **Spatio-Temporal Analysis**: Assess clustering tendency for (Latitude, Longitude, HOUR, WEEKDAY)
-   - **Mixed-Type Analysis**: Validate clustering tendency for categorical + numeric subspace
+   - Hopkins statistic (custom): mixed‑type compatible, computed via Gower distance
+   - Multi‑repetition stability: average over 5 runs with mean ± std and qualitative label
+   - Spatio‑temporal subspace: Latitude, Longitude + cyclical(HOUR, WEEKDAY)
+   - Mixed‑type subspace: categorical crime context + limited numeric context (Gower)
 
-5. **Spatial Features Hopkins Testing**
-   - Test clustering tendency specifically for spatial coordinates
-   - Validate geographic clustering potential
-   - Assess micro-hotspot structure in crime data
+5. **Categorical + Numeric Subspace Testing**
+   - Assess clustering tendency on categorical (e.g., BORO_NM, OFNS_DESC, PREM_TYP_DESC, TIME_BUCKET, weekend/holiday flags, demographics) plus compact numeric context (e.g., METRO_DISTANCE, POI_DENSITY_SCORE)
+   - Treat intended binary/time‑bucket fields as categorical dtype before Gower
 
-6. **Categorical + Numeric Subspace Testing**
-   - Assess clustering tendency for mixed-type feature combinations
-   - Test offense, premise, temporal bucket, and demographic features
-   - Evaluate context scores and limited numeric features
-
-7. **Data Integrity Validation**
+6. **Data Integrity Validation**
    - Check for duplicates and data consistency
    - Validate feature availability and completeness
    - Ensure inputs are suitable for subsequent clustering stages
 
-8. **Results Export and Documentation**
-   - Export Hopkins statistics and validation results
-   - Document clustering readiness assessment
-   - Prepare recommendations for clustering approach
+7. **Results and Documentation**
+   - Results are printed to console (no CSV/JSON export in code). Optional persistence can be added.
+   - Includes qualitative spatial distribution diagnostics (scatter, histograms, heatmap, time/borough summaries)
 
 ---
 
 ## 2. MultidimensionalClusteringAnalysis.ipynb
 
-**Objective:** Comprehensive multidimensional clustering analysis for crime pattern discovery using spatial, temporal, and categorical features with advanced pipeline construction
+Objective: Multidimensional clustering for categorical and mixed features, producing actionable crime pattern profiles and an executive summary for police operations.
 
 ### Sections:
 1. **Setup**
-   - Import core data manipulation libraries (pandas, numpy, statistics)
-   - Import geographic libraries (shapely.geometry, pyproj for coordinate transformations)
-   - Import clustering libraries (sklearn.cluster for KMeans/SpectralClustering, kmodes for categorical clustering)
-   - Import custom transformers from Utilities module (CategoricalPreprocessor, MixedFeaturePreprocessor, etc.) located at `Notebooks/Clustering/Utilities/clustering_transformers.py`
-   - Configure Google Colab support (optional)
+    - Import core data manipulation libraries (pandas, numpy, statistics)
+    - Import clustering libraries (sklearn.cluster for KMeans/SpectralClustering; kmodes for categorical)
+    - Import custom transformers from Utilities at `Notebooks/Clustering/Utilities/clustering_transformers.py`:
+       - CategoricalPreprocessor, ColumnBinner, CategoricalDimensionalityReducer, GroupBalancedOneHotEncoder
 
 2. **Configure Paths and Custom Utilities**
    - Set up project directory structure and output paths
@@ -82,75 +73,52 @@ This document provides a structured approach for identifying crime hotspots usin
    - **Spatial Context Features**: POI-based features (distances, counts, diversity, density scores)
    - **Social Features**: Demographic interaction features (SAME_AGE_GROUP, SAME_SEX)
 
-4. **Cross-Validation Functions**
-   - **Custom CV Implementation**: Clustering-specific cross-validation with appropriate metrics
-   - **Silhouette Score Evaluation**: Quality assessment using intra vs inter-cluster distances
-   - **Multi-fold Validation**: K-fold cross-validation adapted for clustering evaluation
-   - **Composite Scoring**: Combined metrics for robust clustering quality assessment
-
-5. **Data Loading & Feature Preparation**
+4. **Data Loading & Feature Preparation**
    - Load preprocessed crime dataset with comprehensive feature set
    - Validate feature availability and completeness
    - **Feature Selection Strategy**: Select appropriate features for different clustering approaches
    - **Data Quality Assessment**: Check for missing values and data consistency
 
-6. **Spatial Clustering Pipeline**
-   - **Geographic Coordinate Clustering**: Primary spatial clustering using Latitude/Longitude
-   - **Spatial Preprocessing**: Coordinate standardization and outlier handling
-   - **Spatial Cluster Validation**: Geographic coherence and hotspot identification
-   - **Spatial Context Integration**: Incorporate POI features for enhanced spatial analysis
+5. **Categorical Clustering (K‑Modes)**
+   - Pipeline: CategoricalPreprocessor → KModes
+   - Features: base (BORO_NM, OFNS_DESC, PREM_TYP_DESC) + operational categorical (TIME_BUCKET, IS_WEEKEND, IS_HOLIDAY) + demographics (sex/age only) + POI/context bins via ColumnBinner (e.g., METRO_DISTANCE_BIN, POI_DENSITY_SCORE_BIN)
+   - Grid search: n_clusters 6–20, init ∈ {Huang, Cao}, n_init ∈ {5, 10}
+   - Evaluation: custom composite score combining dissimilarity and cluster balance; select best and profile clusters
 
-7. **Temporal Clustering Analysis**
-   - **Time Pattern Clustering**: Cluster based on temporal features (hour, day, season)
-   - **Temporal Preprocessing**: Cyclical encoding and temporal standardization
-   - **Extended Temporal Features**: Full temporal feature set clustering
-   - **Temporal Cluster Interpretation**: Time-based crime pattern discovery
+6. **Categorical Dimensionality Reduction + KMeans**
+   - Pipeline: CategoricalDimensionalityReducer (OneHot + PCA with group‑balanced encoding) → KMeans
+   - Grid: dimred__n_components ∈ {10, 20, 30}; cluster__n_clusters ∈ {8, 12, 16, 20}; cluster__n_init ∈ {10, 20}
+   - Metric: silhouette over transformed embedding
 
-8. **Categorical Clustering (K-Modes)**
-   - **K-Modes Implementation**: Categorical clustering for crime type and location features
-   - **Categorical Feature Selection**: Choose relevant categorical features for clustering (use `CategoricalPreprocessor` from utilities)
-   - **Mode-based Distance**: Categorical distance metrics for cluster formation
-   - **Categorical Cluster Validation**: Assess categorical pattern quality
+7. **Spectral Clustering (mixed representation)**
+   - Pipeline: ColumnTransformer(GroupBalancedOneHotEncoder for categoricals; StandardScaler for numericals) → SpectralClustering
+   - Grid: n_clusters ∈ {8, 12, 16}, affinity ∈ {rbf, nearest_neighbors} with gamma/n_neighbors sweeps; assign_labels='kmeans'
+   - Metric: silhouette on the embedded numeric matrix
 
-9. **Mixed-Type Clustering**
-   - **Spectral Clustering**: Non-convex clustering for mixed spatial-temporal-categorical features
-   - **Mixed Feature Preprocessing**: Handle combined numerical and categorical features (use `MixedFeaturePreprocessor` from utilities)
-   - **Affinity Matrix Construction**: Build similarity matrices for spectral clustering
-   - **Mixed-Type Validation**: Assess quality of multi-modal clustering
+8. **Pipeline Construction and Optimization**
+   - Modular sklearn pipelines; parameter sweeps via ParameterGrid and custom loops
+   - Balanced one‑hot encoding prevents high‑cardinality dominance
 
-10. **Advanced Clustering Methods**
-    - **Spectral Clustering (NJW Algorithm)**: Ng-Jordan-Weiss implementation for non-convex patterns
-    - **Multidimensional Feature Integration**: Combine spatial, temporal, and categorical features
-    - **Advanced Preprocessing Pipelines**: Custom transformers for mixed-type data
-    - **Parameter Optimization**: Grid search for optimal clustering parameters
+9. **Clustering Evaluation and Comparison**
+   - Metrics: composite score (K‑Modes), silhouette (DimRed+KMeans, Spectral)
+   - Method comparison JSON: best scores/params for K‑Modes, CatDimRed+KMeans, Spectral
 
-11. **Pipeline Construction and Optimization**
-    - **Modular Pipeline Design**: Sklearn pipelines for preprocessing + clustering
-    - **Custom Transformer Integration**: Use domain-specific preprocessing transformers
-    - **Cross-Validation Integration**: Pipeline evaluation with clustering-specific CV
-    - **Parameter Grid Search**: Systematic optimization of clustering parameters
-
-12. **Clustering Evaluation and Comparison**
-    - **Multiple Metric Assessment**: Silhouette, inertia, and custom clustering metrics
-    - **Method Comparison**: Compare spatial, temporal, categorical, and mixed approaches
-    - **Stability Analysis**: Assess clustering consistency across different parameters
-    - **Performance Analysis**: Computational efficiency and scalability assessment
-
-13. **Results Export and Visualization**
-    - **Cluster Assignment Export**: Save cluster labels and membership information
-    - **Performance Metrics Export**: Document clustering quality metrics
-    - **Pipeline Serialization**: Save trained clustering pipelines for deployment
-    - **Results Documentation**: Comprehensive analysis documentation
+10. **Results Export and Visualization**
+      - Exports:
+         - `JupyterOutputs/Clustering (MultidimensionalClusteringAnalysis)/pipeline_methods_comparison.json`
+         - `JupyterOutputs/Clustering (MultidimensionalClusteringAnalysis)/executive_crime_summary.json`
+         - Optional: `.../executive_crime_summary_enriched.json`, `.../police_operational_intelligence_enriched.csv`
+      - Operational dashboards: concise priority tables and executive summary printed to console; optional CSV/JSON saved
 
 ---
 
 ## 3. SpatialHotspotAnalysis.ipynb
 
-**Objective:** Specialized geographic crime hotspot identification using density-based clustering methods and spatial validation
+Objective: Specialized geographic crime hotspot identification using density‑based clustering with temporal encoding, plus optional CLARANS comparison and temporal pattern profiling.
 
 ### Sections:
 1. **Setup**
-   - Import spatial clustering libraries (DBSCAN, HDBSCAN, KMeans from sklearn.cluster)
+   - Import spatial clustering libraries (DBSCAN from sklearn.cluster) and a custom CLARANS (k-medoids) implementation
    - Import validation libraries (sklearn.metrics for silhouette analysis)
    - Import visualization libraries (matplotlib, seaborn, plotly/folium for mapping)
    - Import data manipulation libraries (pandas, numpy)
@@ -163,59 +131,60 @@ This document provides a structured approach for identifying crime hotspots usin
    - **Feature selection**: Select geographic coordinates for spatial clustering
    - **Scaling**: Apply appropriate scaling to coordinate and distance features
 
-3. **Density-Based Spatial Clustering (DBSCAN)**
-   - **Algorithm**: DBSCAN for spatial crime concentration detection
-   - **Parameters**: Epsilon (distance threshold) and MinPts optimization
-   - **Features**: Latitude-longitude coordinates as primary features
-   - **Validation**: Geographic visualization and hotspot coherence
+3. **Spatio‑Temporal DBSCAN with k‑distance heuristic**
+   - Algorithm: DBSCAN to detect spatial crime concentrations (micro‑hotspots)
+   - k‑distance pre‑stage: compute descending k‑distance curves and estimate ε via bucketed slope ≈ −1; build focused ε grid with spreads
+   - Projected coordinates: SpatialProjectionTransformer to EPSG:32618 (meters) + CyclicalTransformer for (HOUR, WEEKDAY) with StandardScaler and a temporal weight
+   - Parameter sweep: grid over ε (meters), min_samples, and temporal weight; skip configs with <2 clusters
+   - Selection criteria (implemented): minimize noise ratio; tie‑break by maximizing silhouette, then number of clusters
+   - Outputs: Best pipeline refit; labeled DataFrame `df_labeled` with X_METERS/Y_METERS and cluster IDs
 
-4. **Hierarchical Density Clustering (HDBSCAN)**
-   - **Objective**: Handle varying density hotspots
-   - **Algorithm**: HDBSCAN for multi-density spatial patterns
-   - **Parameter**: MinClusterSize optimization
-   - **Comparison**: DBSCAN vs HDBSCAN performance
+4. **CLARANS (k‑medoids) comparative evaluation**
+   - Explore k over a wide grid; multiple local minima searches; select k by silhouette on projected spatial coords; retain total medoid cost as auxiliary
+   - Outputs: optional `df_labeled_clar`
 
-5. **K-Means for Geographic Zones**
-   - **Objective**: Identify fixed number of crime zones
-   - **Algorithm**: K-means on spatial coordinates
-   - **Optimization**: Elbow method for optimal K
-   - **Validation**: Silhouette analysis
+5. **Temporal Pattern Integration**
+   - Hour/day cyclical features are part of the DBSCAN feature space; downstream temporal profiling classifies clusters (e.g., concentrated_night, weekend_focused)
 
-6. **Temporal Pattern Integration**
-   - **Hour-based clustering**: Peak crime hours identification
-   - **Day-of-week patterns**: Weekly crime concentration
-   - **Seasonal analysis**: Monthly/quarterly hotspot variations
+6. **Hotspot Validation & Characterization**
+   - Static scatter plots in meter space, with legends summarizing n, radius, hour mean, weekday mode
+   - By zone/borough faceting (BORO_NM) with focus filters (min points, max radius)
+   - Temporal pattern analysis: time slots, weekday dominance, diversity, weekend share; operational hotspot recommendations
 
-7. **Hotspot Validation & Characterization**
-   - **Geographic validation**: Map visualization of detected hotspots
-   - **Crime type profiling**: Dominant crimes per hotspot
-   - **Temporal profiling**: Time patterns within hotspots
-   - **Statistical validation**: Cluster quality metrics
+7. **Production Pipeline Setup**
+   - DBSCAN pipeline as above; CLARANS optional comparison
+   - Source selection via `CLUSTER_SOURCE` ∈ {'dbscan','clarans'}
+   - Exports: interactive map saved to `JupyterOutputs/Clustering (SpatialHotspots)/cluster_temporal_patterns_map.html`; figures/logs inline
 
-8. **Production Pipeline Setup**
-   - **Spatial hotspot pipeline**: Combine preprocessing + DBSCAN/HDBSCAN for deployment
-   - **Geographic zone pipeline**: Standardized K-means pipeline for zone identification
-   - **Pipeline validation**: Cross-validation and performance testing
-   - **Export models**: Save trained pipelines for operational use
+8. **Notes**
+   - The notebook includes k-distance plots, best-config selection logs, and cluster visualizations by area
+   - CLARANS is implemented inline for comparative analysis; use with caution on very large k ranges
 
 ---
 
 ## General Notes
-- Data source: expects `JupyterOutputs/Final/final_crime_data.csv`. Generate it by running the General notebooks up to DataFinal.
-- Custom utilities: clustering pipelines use `Notebooks/Clustering/Utilities/clustering_transformers.py` which provides:
-   - `CyclicalTransformer` and `SchemaValidator` for safe temporal encoding (HOUR 0–23, MONTH 1–12, DAY 1–31, WEEKDAY as names).
-   - `SpatialProjectionTransformer` to project lat/lon to meters (default CRS EPSG:32618 for NYC; Web Mercator 3857 is an alternative).
-   - `LatLonToRadiansTransformer` for angular-distance workflows.
-   - `FeatureSelector`, `PCATransformer`, `CategoricalPreprocessor`, `MixedFeaturePreprocessor`, `CategoricalDimensionalityReducer`, and `ColumnBinner` for advanced pipelines.
-- Algorithm choices: DBSCAN/HDBSCAN for density hotspots, K-Means for fixed-zone partitioning, K-Modes for categorical patterns, Spectral Clustering for mixed non-convex structures.
+- Data sources:
+   - SpatialHotspotAnalysis, MultidimensionalClusteringAnalysis load `Data/final_crime_data.csv`
+   - ClusteringTendency loads `JupyterOutputs/Final/final_crime_data.csv`
+- Custom utilities: `Notebooks/Clustering/Utilities/clustering_transformers.py` provides:
+   - CyclicalTransformer, SchemaValidator (safe temporal encoding)
+   - SpatialProjectionTransformer (project lat/lon → meters, default EPSG:32618)
+   - LatLonToRadiansTransformer (angular workflows)
+   - FeatureSelector, PCATransformer, CategoricalPreprocessor, CategoricalDimensionalityReducer, ColumnBinner, GroupBalancedOneHotEncoder
+- Algorithm choices:
+   - DBSCAN for spatio‑temporal hotspots; CLARANS for medoid‑based spatial comparison
+   - K‑Modes for categorical patterns; OneHot+PCA→KMeans and Spectral for mixed representations
 - Preprocessing tips:
-   - Project to meters before Euclidean-based clustering (DBSCAN/KMeans).
-   - Scale numeric features; encode/compact categorical features (OneHot+PCA or MCA) for spectral methods.
-   - Validate temporal columns before cyclical transforms.
+   - Always project to meters for Euclidean spatial clustering
+   - Use cyclical encoding for time; treat TIME_BUCKET/weekend/holiday as categorical where appropriate
+   - Use group‑balanced one‑hot for categorical features feeding numeric methods to avoid high‑cardinality dominance
 - Parameter guidance:
-   - DBSCAN eps should be in meters if using projected coords; tune with grid or k-distance plot (k≈MinPts).
-   - HDBSCAN handles variable density; focus on `min_cluster_size`.
-   - For K-Means, use elbow and silhouette; run multiple `n_init`.
-- Evaluation and exports: write labels, metrics, and serialized pipelines under `JupyterOutputs/Clustering/` subfolders per notebook; include map-ready outputs when applicable.
-- Dependencies: pandas, numpy, scikit-learn, pyproj, shapely (optional for geometry), kmodes (for categorical), hdbscan (optional), matplotlib/seaborn/plotly/folium for visualization.
-- Reproducibility: fix `random_state` where supported; document CRS and scaling choices in outputs.
+   - DBSCAN: estimate ε via k‑distance slope≈−1; sweep ε spreads, min_samples, temporal weights; prefer ≥2 clusters; selection prioritizes low noise
+   - CLARANS: explore k with multiple local minima; select by silhouette; keep cost as diagnostic
+   - K‑Means (DimRed pipeline): grid n_clusters, n_init; select by silhouette
+- Evaluation and exports:
+   - Multidimensional: comparison JSON + executive summaries; optional enriched CSV
+   - SpatialHotspot: interactive map HTML + plots; labeled DataFrame in‑kernel
+   - Tendency: console outputs for Hopkins + visuals (no export by default)
+- Dependencies: pandas, numpy, scikit‑learn, kmodes, pyproj, shapely (optional), gower (for mixed‑type Hopkins), matplotlib/seaborn/plotly/folium
+- Reproducibility: fixed `random_state`; document CRS (EPSG:32618) and temporal filtering (e.g., YearMonth ≥ 202401 or ≥ 202411 depending on notebook)
