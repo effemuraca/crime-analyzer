@@ -10,8 +10,35 @@ const PATHS = {
   patternTime: (t)=>`../../JupyterOutputs/PatternAnalysis/TimeBucket_${t}_insights.txt`
 };
 
+// Source strategy: keep KPIs flexible, but always take priority patterns from one JSON
+// Options: 'enriched' | 'base' | 'auto' (auto prefers enriched, falls back to base)
+const EXEC_SOURCE = {
+  kpis: 'auto',
+  priority: 'base'
+};
+
 // thresholds to filter weak rules
 const RULE_FILTER = { minConfidencePct: 60, minLift: 1.05, minSupport: 0.10 };
+
+// small helpers for readable time/day windows from executive summary
+function timeWindow(bucket){
+  switch(String(bucket||'').toUpperCase()){
+    case 'MORNING': return '06:00–12:00';
+    case 'AFTERNOON': return '12:00–18:00';
+    case 'EVENING': return '18:00–22:00';
+    case 'NIGHT': return '22:00–06:00';
+    default: return 'all day';
+  }
+}
+
+function dayModeLabel(p){
+  const wknd = p?.is_weekend_mode===true;
+  const hol = p?.is_holiday_mode===true;
+  if(hol && wknd) return 'weekends and holidays';
+  if(hol) return 'holidays';
+  if(wknd) return 'weekends';
+  return 'weekdays';
+}
 
 function parseMetrics(metricLine){
   const rawLine = metricLine ? metricLine.replace(/^\-\s*/, '').trim() : '';
@@ -90,11 +117,47 @@ function renderPriorityPatterns(exec){
 
 function deriveRecommendations(exec){
   const recos = []; if(!exec) return recos;
-  if(exec.immediate_deployment_needed){ recos.push('Deploy targeted patrols in hotspot areas over the next 7 days (afternoon window).'); }
-  if(exec.high_priority_patterns>0){ recos.push(`Allocate resources to ${exec.high_priority_patterns} high-priority patterns with 4-hour rotations.`); }
-  if(exec.most_concentrated_pattern?.premises){ recos.push(`Engage with stores/managers: strengthen security in ${exec.most_concentrated_pattern.premises.toLowerCase()}.`); }
-  if(exec.most_concentrated_pattern?.borough){ recos.push(`Coordinate NYPD precincts in ${exec.most_concentrated_pattern.borough} for targeted prevention.`); }
-  return recos;
+  // Helper to build per-pattern recommendations
+  const patternRecos = (p, label)=>{
+    if(!p) return [];
+    const out = [];
+    const borough = p.borough?.toUpperCase();
+    const time = timeWindow(p.time_bucket);
+    const dayLabel = dayModeLabel(p);
+    const prem = p.premises ? p.premises.toLowerCase() : undefined;
+    const vol = (p.volume!=null) ? ` (~${p.volume} cases)` : '';
+    const conc = p.concentration ? ` (concentration ${p.concentration})` : '';
+
+    // Patrol targeting
+    if(borough && prem){
+      out.push(`${label}: patrol ${prem} in ${borough} during ${dayLabel}, ${time}${vol}${conc}.`);
+    } else if(borough){
+      out.push(`${label}: focus patrols in ${borough} during ${dayLabel}, ${time}${vol}${conc}.`);
+    }
+
+    // Engagement with premises owners/managers
+    if(prem && /STORE|MALL|COMMERCIAL|RESTAURANT|BAR|CHAIN/i.test(p.premises)){
+      out.push(`Engage business owners to adopt theft deterrents (cameras, staff awareness) at ${prem}.`);
+    }
+
+    // Scheduling tweak for weekdays vs weekends
+    if(p.is_weekend_mode){
+      out.push('Increase weekend staffing and coordinate with transit/commercial hubs.');
+    } else {
+      out.push('Schedule weekday coverage around opening/commute peaks matching the time bucket.');
+    }
+
+    return out;
+  };
+
+  // Most concentrated and highest volume patterns
+  patternRecos(exec.most_concentrated_pattern, 'Most concentrated').forEach(r=>recos.push(r));
+  patternRecos(exec.highest_volume_pattern, 'Highest volume').forEach(r=>recos.push(r));
+
+  const dedup = Array.from(new Set(recos));
+  const trimmed = dedup.filter(line=>!line.toUpperCase().includes('UNKNOWN')).slice(0,5);
+
+  return trimmed;
 }
 
 function renderRecommendations(exec){ const ul = $('#recommendations'); ul.innerHTML = ''; const recos = deriveRecommendations(exec); if(recos.length===0){ ul.append(el('li', null, 'No recommendations available.')); return; } for(const r of recos){ ul.append(el('li', null, r)); } }
@@ -289,8 +352,24 @@ function setMode(mode){
 async function main(){
   wireMapFallback();
   $('#reload-map').addEventListener('click', ()=>{ const f = document.getElementById('hotspot-map'); f.src = PATHS.map + `?t=${Date.now()}`; });
-  let exec = await loadJSON(PATHS.executive); if(!exec) exec = await loadJSON(PATHS.execFallback);
-  setLastUpdated(exec?.analysis_date); renderKpis(exec); renderPriorityPatterns(exec); renderRecommendations(exec);
+  // Load both potential sources
+  const execEnriched = await loadJSON(PATHS.executive);
+  const execBase = await loadJSON(PATHS.execFallback);
+  const pick = (pref)=>{
+    if(pref==='enriched') return execEnriched ?? null;
+    if(pref==='base') return execBase ?? null;
+    // auto
+    return execEnriched ?? execBase;
+  };
+
+  const dataForKpis = pick(EXEC_SOURCE.kpis);
+  const dataForPriority = (EXEC_SOURCE.priority==='auto') ? pick('auto') : pick(EXEC_SOURCE.priority);
+
+  setLastUpdated(dataForKpis?.analysis_date);
+  renderKpis(dataForKpis);
+  // Priority patterns and recommendations are intentionally bound to the chosen source
+  renderPriorityPatterns(dataForPriority);
+  renderRecommendations(dataForPriority);
   wirePatternModal(); await loadPatternGlobal();
 }
 
