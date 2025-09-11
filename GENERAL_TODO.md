@@ -4,6 +4,3 @@ CARLO:
 - uniformare i jupyter a quelli della classificazione
 - aggiorna clustering.md
 - riguardare classificazione
-
-FERDI:
-- riguardare multidimensional
