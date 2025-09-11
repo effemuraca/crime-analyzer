@@ -19,6 +19,10 @@ LogisticRegression_production_model.joblib
 # Notebook outputs and cache
 .ipynb_checkpoints/
 
+# Project documents (ignore specific LaTeX sources)
+Documents/UserGuidePolice.tex
+Documents/UserGuideTourist.tex
+
 # Temporary and system files
 *.pyc
 __pycache__/

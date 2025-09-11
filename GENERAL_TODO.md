@@ -6,4 +6,4 @@ CARLO:
 - riguardare classificazione
 
 FERDI:
-- riguardare spatial, multidimensional
+- riguardare multidimensional
