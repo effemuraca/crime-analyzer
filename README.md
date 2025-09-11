@@ -64,6 +64,7 @@ crime-analyzer/
 
 - Python 3.8+
 - Docker Desktop (for Tourist API)
+- Dataset can be downloaded from [NYPD Complaint Historic Data](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data) and [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243/about_data)
 
 ### Police Dashboard Setup
 
