@@ -1,21 +1,21 @@
 {
-  "analysis_date": "2025-09-11 02:36",
+  "analysis_date": "2025-09-11 20:42",
   "total_crimes_analyzed": 10000,
-  "patterns_identified": 6,
-  "high_priority_patterns": 2,
-  "high_priority_crime_percentage": 38.8,
+  "patterns_identified": 18,
+  "high_priority_patterns": 4,
+  "high_priority_crime_percentage": 33.1,
   "most_concentrated_pattern_signature": "Pattern - Weekday - SUSP: U UNKNOWN | VIC: U UNKNOWN",
   "highest_volume_pattern_signature": "Pattern - Weekday - SUSP: U UNKNOWN | VIC: U UNKNOWN",
   "most_concentrated_pattern": {
     "is_weekend_mode": false,
     "is_holiday_mode": false,
-    "concentration_score": 0.5561712846347607
+    "concentration_score": 0.7476459510357816
   },
   "highest_volume_pattern": {
     "is_weekend_mode": false,
     "is_holiday_mode": false,
-    "concentration_score": 0.5561712846347607
+    "concentration_score": 0.44541484716157204
   },
   "immediate_deployment_needed": true,
-  "resource_focus_patterns": 2
+  "resource_focus_patterns": 4
 }
