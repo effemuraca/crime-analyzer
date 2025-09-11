@@ -2,6 +2,7 @@ import logging
 import warnings
 from typing import Dict
 from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.preprocessing import OneHotEncoder
 from sklearn.utils.validation import check_is_fitted
 from sklearn.decomposition import PCA
 from pyproj import Transformer
@@ -466,112 +467,6 @@ class MCATransformer(BaseEstimator, TransformerMixin):
             raise TypeError("Input must be a pandas DataFrame")
         return X
 
-
-class MixedFeaturePreprocessor(BaseEstimator, TransformerMixin):
-    """
-    Preprocessor for mixed categorical and numerical features for clustering.
-    
-    This transformer handles both categorical and numerical features, applying
-    appropriate preprocessing to each type while maintaining pipeline compatibility.
-    """
-    
-    def __init__(self, max_categorical_features=20, max_numerical_features=10, 
-                 categorical_strategy='drop'):
-        self.max_categorical_features = max_categorical_features
-        self.max_numerical_features = max_numerical_features
-        self.categorical_strategy = categorical_strategy
-        self.categorical_features_ = []
-        self.numerical_features_ = []
-        self.categorical_preprocessor_ = None
-        self.scaler_ = None
-        self._category_mappings_: Dict[str, Dict[str, int]] = {}
-        
-    def fit(self, X, y=None):
-        """Fit the mixed feature preprocessor."""
-        from sklearn.preprocessing import StandardScaler
-        
-        X = self._validate_input(X)
-        
-        # Identify categorical and numerical features
-        categorical_cols = []
-        numerical_cols = []
-        
-        for col in X.columns:
-            if X[col].dtype == 'object' or isinstance(X[col].dtype, pd.CategoricalDtype):
-                categorical_cols.append(col)
-            else:
-                numerical_cols.append(col)
-        
-        # Limit features based on parameters
-        self.categorical_features_ = categorical_cols[:self.max_categorical_features]
-        self.numerical_features_ = numerical_cols[:self.max_numerical_features]
-        
-        # Fit categorical preprocessor if we have categorical features
-        if self.categorical_features_:
-            self.categorical_preprocessor_ = CategoricalPreprocessor(
-                handle_missing=self.categorical_strategy
-            )
-            X_cat = self.categorical_preprocessor_.fit_transform(X[self.categorical_features_])
-            # Build stable mappings from the fitted data
-            self._category_mappings_ = {}
-            for col in X_cat.columns:
-                # Preserve order of appearance for stability
-                seen = []
-                mapping: Dict[str, int] = {}
-                for val in X_cat[col].astype(str).tolist():
-                    if val not in mapping:
-                        mapping[val] = len(mapping)
-                        seen.append(val)
-                self._category_mappings_[col] = mapping
-        
-        # Fit numerical scaler if we have numerical features
-        if self.numerical_features_:
-            self.scaler_ = StandardScaler()
-            self.scaler_.fit(X[self.numerical_features_].fillna(0))  # Simple fillna for numerical
-        
-        return self
-    
-    def transform(self, X):
-        """Transform mixed features."""
-        X = self._validate_input(X)
-        
-        transformed_parts = []
-        
-        # Process categorical features
-        if self.categorical_features_ and self.categorical_preprocessor_:
-            cat_transformed = self.categorical_preprocessor_.transform(X[self.categorical_features_])
-            # Encode using stable mappings from fit; unseen -> -1
-            cat_encoded = pd.DataFrame(index=cat_transformed.index)
-
-            for col in cat_transformed.columns:
-                mapping = self._category_mappings_.get(col, {})
-                cat_encoded[f'{col}_encoded'] = cat_transformed[col].astype(str).map(mapping).fillna(-1).astype(int)
-
-            transformed_parts.append(cat_encoded)
-        
-        # Process numerical features
-        if self.numerical_features_ and self.scaler_:
-            num_data = X[self.numerical_features_].fillna(0)
-            num_scaled = self.scaler_.transform(num_data)
-            num_df = pd.DataFrame(num_scaled, 
-                                columns=[f'{col}_scaled' for col in self.numerical_features_],
-                                index=X.index)
-            transformed_parts.append(num_df)
-        
-        # Combine all parts
-        if transformed_parts:
-            result = pd.concat(transformed_parts, axis=1)
-            return result
-        else:
-            raise ValueError("No features available for transformation")
-    
-    def _validate_input(self, X):
-        """Validate input data."""
-        if not isinstance(X, pd.DataFrame):
-            raise TypeError("Input must be a pandas DataFrame")
-        return X
-
-
 class CategoricalDimensionalityReducer(BaseEstimator, TransformerMixin):
     """
     Categorical Dimensionality Reduction transformer using OneHot + PCA.
@@ -588,23 +483,18 @@ class CategoricalDimensionalityReducer(BaseEstimator, TransformerMixin):
         self.pca_ = None
         
     def fit(self, X, y=None):
-        """Fit encoder and PCA."""        
+        """Fit encoder and PCA."""
         X = self._validate_input(X)
-        
-        # Fit one-hot encoder
-        from sklearn.preprocessing import OneHotEncoder
-        # Support sklearn<1.2 (uses 'sparse' instead of 'sparse_output')
-        try:
-            self.encoder_ = OneHotEncoder(sparse_output=False, handle_unknown='ignore')
-        except TypeError:
-            self.encoder_ = OneHotEncoder(sparse=False, handle_unknown='ignore')
+
+        # Use group-balanced one-hot encoding to prevent high-cardinality features from dominating
+        self.encoder_ = GroupBalancedOneHotEncoder(handle_unknown='ignore')
         X_encoded = self.encoder_.fit_transform(X)
-        
+
         # Fit PCA
         from sklearn.decomposition import PCA
         self.pca_ = PCA(n_components=self.n_components, random_state=self.random_state)
         self.pca_.fit(X_encoded)
-        
+
         return self
     
     def transform(self, X):
@@ -640,14 +530,6 @@ class CategoricalDimensionalityReducer(BaseEstimator, TransformerMixin):
         if not isinstance(X, pd.DataFrame):
             raise TypeError("Input must be a pandas DataFrame")
         return X
-
-# Simple identity preprocessor for categorical data
-class IdentityPreprocessor(BaseEstimator, TransformerMixin):
-    """Simple identity preprocessor that just passes data through."""
-    def fit(self, X, y=None):
-        return self
-    def transform(self, X, y=None):
-        return X.copy()
 
 
 class ColumnBinner(BaseEstimator, TransformerMixin):
@@ -766,3 +648,38 @@ class ColumnBinner(BaseEstimator, TransformerMixin):
     def get_feature_names_out(self, input_features=None):
         """Get output feature names (created bins)."""
         return np.array(getattr(self, 'created_bins_', []))
+    
+class GroupBalancedOneHotEncoder(BaseEstimator, TransformerMixin):
+    """OneHotEncoder with per-feature group scaling.
+    For a categorical feature with k categories, each one-hot column is divided by sqrt(k)
+    so that every original categorical feature contributes a comparable maximum Euclidean weight.
+    This prevents features with many categories from dominating distances.
+    """
+    def __init__(self, handle_unknown='ignore'):
+        self.handle_unknown = handle_unknown
+        self.group_sizes_ = None
+        self._ohe = None
+
+    def fit(self, X, y=None):
+        try:
+            self._ohe = OneHotEncoder(sparse_output=False, handle_unknown=self.handle_unknown)
+        except TypeError:  # older sklearn compatibility
+            self._ohe = OneHotEncoder(sparse=False, handle_unknown=self.handle_unknown)
+        self._ohe.fit(X)
+        self.group_sizes_ = [len(cats) for cats in self._ohe.categories_]
+        return self
+
+    def transform(self, X):
+        Z = self._ohe.transform(X)
+        # Always apply balancing
+        start = 0
+        for k in self.group_sizes_:
+            end = start + k
+            if k > 0:
+                Z[:, start:end] *= (1.0 / np.sqrt(k))
+            start = end
+        return Z
+
+    @property
+    def categories_(self):  # passthrough for compatibility
+        return self._ohe.categories_
