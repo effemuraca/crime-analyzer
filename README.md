@@ -1,84 +1,66 @@
 # Crime Analyzer
 
-A comprehensive crime analysis platform that provides insights and predictions for both law enforcement and tourists in urban environments. The project combines machine learning models, data visualization, and web applications to analyze crime patterns and assess safety risks.
+A streamlined crime analysis platform focused on tourist safety risk prediction. The project combines a production-ready FastAPI service, machine learning artifacts, and notebooks for analysis and model development.
 
 ## Features
 
-- **Police Intelligence Dashboard**: Static web dashboard for law enforcement with hotspot maps, crime pattern analysis, and operational insights
-- **Tourist Safety Prediction API**: FastAPI service that predicts crime risk for tourists using machine learning models with SHAP explanations
-- **Machine Learning Pipeline**: Complete workflow including data preprocessing, feature engineering, model training, and evaluation
-- **Spatial and Temporal Analysis**: Clustering algorithms for identifying crime hotspots and temporal patterns
-- **Pattern Analysis**: Rule-based insights for understanding crime trends and correlations
-- **Interactive Visualizations**: Jupyter notebooks with comprehensive analysis and visualization capabilities
+- Tourist Safety Prediction API: FastAPI service that predicts crime risk for tourists using a Logistic Regression model with lightweight explanations and contextual trends
+- Machine Learning Pipeline: End-to-end workflow including data preprocessing, feature engineering, model training, and evaluation
+- Pattern Analysis: Rule-based insights enriching predictions with neighborhood and temporal trends
+- Notebooks and Outputs: Reproducible notebooks and exported artifacts for development and validation
 
 ## Repository Structure
 
 ```
 crime-analyzer/
-├── Application/                    # Web applications
-│   ├── Police/                     # Police intelligence dashboard
-│   │   ├── app.js                  # Dashboard JavaScript
-│   │   ├── index.html              # Main dashboard page
-│   │   ├── styles.css              # Dashboard styling
-│   │   ├── logo_police.png         # Police logo
-│   │   └── README.md               # Police app documentation
-│   └── Tourists/                   # Tourist safety API
+├── Application/
+│   └── Tourists/
 │       ├── app.py                  # FastAPI application
-│       ├── docker-compose.yml      # Docker configuration
+│       ├── docker-compose.yml      # Docker configuration (exposes :8000)
 │       ├── Dockerfile              # Container definition
-│       ├── pattern_insights.py     # Pattern insights module
+│       ├── pattern_insights.py     # Pattern insights module (uses JupyterOutputs)
 │       ├── requirements.txt        # Python dependencies
 │       └── README.md               # Tourist API documentation
-├── Data/                           # Raw data files
-├── DataIntegrated/                 # Integrated datasets
+├── Data/                           # Raw data (optional/local)
 ├── Documents/                      # Project documentation
-│   ├── Project Guidelines.pdf      # Project guidelines
-│   ├── Project Proposal.pptx       # Initial proposal
-│   ├── UserGuidePolice.pdf         # Police user guide
-│   ├── UserGuideTourist.pdf        # Tourist user guide
-│   ├── NYPD_Complaint_Historic_DataDictionary.xlsx  # Data dictionary
-│   ├── PDCode_PenalLaw.xlsx        # Penal law codes
-│   └── figures/                    # Documentation figures
-├── JupyterOutputs/                 # ML model outputs and results
-│   ├── Classification (Final)/     # Final trained models
-│   ├── Classification (Modeling)/  # Model selection results
-│   ├── Classification (Preprocessing)/  # Preprocessing artifacts
-│   ├── Classification (Tuning)/    # Hyperparameter tuning results
-│   ├── Clustering/                 # Clustering analysis outputs
-│   ├── PatternAnalysis/            # Pattern analysis results
-│   └── VisualizationPreprocessing/ # Visualization data
+│   ├── UserGuideTourist.pdf
+│   ├── NYPD_Complaint_Historic_DataDictionary.xlsx
+│   ├── PDCode_PenalLaw.xlsx
+│   └── figures/
+├── JupyterOutputs/                 # ML model artifacts and results
+│   ├── Classification (Final)/
+│   ├── Classification (Modeling)/
+│   ├── Classification (Preprocessing)/
+│   ├── Classification (Tuning)/
+│   ├── PatternAnalysis/
+│   ├── VisualizationPreprocessing/
+│   ├── DataIntegrated/
+│   ├── FeatureEngineered/
+│   ├── Final/
+│   ├── Merged/
+│   ├── PrePreProcessed/
+│   ├── Processed/
+│   └── Raw/
 ├── Notebooks/                      # Jupyter notebooks
-│   ├── Classification/             # Classification notebooks
-│   ├── Clustering/                 # Clustering notebooks
-│   ├── General/                    # General analysis notebooks
-│   └── PatternAnalysis/            # Pattern analysis notebooks
-├── tools/                          # Utility scripts
-│   └── pattern_analysis_profile.py # Pattern analysis profiling
-├── GENERAL_TODO.md                 # Project task list
-└── README.md                       # This file
+│   ├── Classification/
+│   ├── General/
+│   └── PatternAnalysis/
+├── tools/
+│   └── pattern_analysis_profile.py
+└── README.md
 ```
+
+Note: The previous Police Intelligence Dashboard and clustering components have been removed.
 
 ## Installation and Setup
 
 ### Prerequisites
 
-- Python 3.8+
-- Docker Desktop (for Tourist API)
-- Dataset can be downloaded from [NYPD Complaint Historic Data](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data) and [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243/about_data)
+- Python 3.10+
+- Docker Desktop (for running the Tourist API)
+- Dataset can be downloaded from: [NYPD Complaint Historic Data](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i/about_data) and [NYPD Complaint Data Current (Year To Date)](https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Current-Year-To-Date-/5uac-w243/about_data)
 
-### Police Dashboard Setup
-
-1. Navigate to the repository root
-2. Start a static HTTP server:
-
-   **Option A: Python**
-   ```powershell
-   python -m http.server 8000
-   ```
-
-3. Open `http://localhost:8000/Application/Police/index.html` in your browser
-
-### Tourist Safety API Setup
+### Tourist Safety API (Docker)
 
 1. Navigate to `Application/Tourists/`
 2. Ensure Docker Desktop is running
@@ -88,11 +70,13 @@ crime-analyzer/
    docker compose up --build
    ```
 
-4. Access the API documentation at `http://localhost:8000/docs`
+4. Open `http://localhost:8000/docs` for interactive API docs
 
-### Python Dependencies
+The container mounts the repo at `/workspace` to load model artifacts from `JupyterOutputs`.
 
-For development work with notebooks or tools:
+### Python Dependencies (local dev)
+
+For working with notebooks or running utilities locally:
 
 ```powershell
 pip install -r Application/Tourists/requirements.txt
@@ -100,26 +84,18 @@ pip install -r Application/Tourists/requirements.txt
 
 ## Usage
 
-### Police Dashboard
-
-- View crime hotspot maps
-- Analyze temporal patterns
-- Review key performance indicators (KPIs)
-- Access clustering insights and recommendations
-
 ### Tourist Safety API
 
-Send POST requests to `/api/v1/predict` with crime incident data to receive:
+Send POST requests to `/api/v1/predict` with incident context to receive:
 
 - Risk classification (HIGH_RISK/LOW_RISK)
-- Confidence scores
-- SHAP-based feature explanations
-- Neighborhood and temporal trend insights
+- Confidence score (positive-class probability)
+- Top contributing features (best-effort for linear models)
+- Neighborhood/time-bucket trend insights
 
-**Example API Usage:**
+Example (PowerShell, single record):
 
 ```powershell
-# Single prediction
 $body = @{
   BORO_NM = "BROOKLYN"
   LOC_OF_OCCUR_DESC = "OUTSIDE"
@@ -128,30 +104,53 @@ $body = @{
   VIC_SEX = "M"
   Latitude = 40.6782
   Longitude = -73.9442
-  # ... additional fields
-}
+  BAR_DISTANCE = 120
+  NIGHTCLUB_DISTANCE = 500
+  ATM_DISTANCE = 80
+  ATMS_COUNT = 2
+  BARS_COUNT = 3
+  BUS_STOPS_COUNT = 1
+  METROS_COUNT = 0
+  NIGHTCLUBS_COUNT = 0
+  SCHOOLS_COUNT = 1
+  METRO_DISTANCE = 300
+  MIN_POI_DISTANCE = 30
+  AVG_POI_DISTANCE = 150
+  MAX_POI_DISTANCE = 600
+  TOTAL_POI_COUNT = 7
+  POI_DIVERSITY = 4
+  POI_DENSITY_SCORE = 0.45
+  HOUR = 13
+  DAY = 15
+  WEEKDAY = "MONDAY"
+  IS_WEEKEND = 0
+  MONTH = 5
+  YEAR = 2023
+  SEASON = "SPRING"
+  TIME_BUCKET = "AFTERNOON"
+  IS_HOLIDAY = 0
+  IS_PAYDAY = 0
+} | ConvertTo-Json
 
-Invoke-RestMethod -Uri "http://localhost:8000/api/v1/predict" -Method Post -Body ($body | ConvertTo-Json) -ContentType "application/json"
+Invoke-RestMethod -Uri "http://localhost:8000/api/v1/predict" -Method Post -Body $body -ContentType "application/json"
 ```
 
 ### Jupyter Notebooks
 
-Run the notebooks in `Notebooks/` for:
+Use notebooks in `Notebooks/` for:
 
 - Data exploration and preprocessing
 - Model training and evaluation
-- Clustering analysis
-- Pattern discovery
-- Visualization generation
+- Pattern discovery and validation
+- Generating analysis figures and reports
 
 ## Project Components
 
 ### Machine Learning Pipeline
 
-- **Preprocessing**: Data cleaning, feature engineering, encoding
-- **Classification**: Logistic Regression model for risk prediction
-- **Clustering**: Spatial and temporal crime pattern identification
-- **Pattern Analysis**: Association rule mining for crime correlations
+- Preprocessing: Data cleaning, feature engineering, encoding
+- Classification: Logistic Regression model for risk prediction
+- Pattern Analysis: Association rule mining for crime correlations (used for trend enrichment)
 
 ### Data Sources
 
@@ -162,7 +161,6 @@ Run the notebooks in `Notebooks/` for:
 ### Output Formats
 
 - Trained models (`.joblib`)
-- Preprocessing pipelines
-- Interactive HTML maps
-- JSON configuration files
+- Preprocessing pipelines and feature name lists
+- JSON configuration and report files
 - Evaluation reports and visualizations
