@@ -1,17 +1,15 @@
 # Tourist Safety Prediction API
 
-FastAPI service for tourist-oriented crime risk predictions using the final Logistic Regression model. Inputs are validated, preprocessed, and scored; responses include explanations and contextual trends.
+FastAPI service for tourist-oriented crime risk predictions using the final Logistic Regression model. Inputs are validated, preprocessed, and scored; responses include lightweight feature-based explanations.
 
 ## Endpoint
 
-- POST /api/v1/predict — Unified prediction with explanations and trends
+- POST /api/v1/predict — Unified prediction with explanations
   - Response (single record):
     - label: HIGH_RISK | LOW_RISK
     - confidence: float (positive class probability)
     - threshold: float
     - explanations.top_features: array of { feature, contribution }
-    - trends.neighborhood: top rules for the input borough (BORO_NM)
-    - trends.time_bucket: top rules for the input time bucket (TIME_BUCKET)
 
 For batch, the endpoint returns: `{ "count": number, "results": [<single-record-response>, ...] }`.
 
@@ -69,9 +67,8 @@ The container binds the project root to `/workspace` so the service can load:
 - /workspace/JupyterOutputs/Classification (Preprocessing)/feature_names.json
 - /workspace/JupyterOutputs/Classification (Final)/LogisticRegression_production_model.joblib
 - /workspace/JupyterOutputs/Classification (Tuning)/LogisticRegression_optimal_threshold.json (optional)
-- /workspace/JupyterOutputs/PatternAnalysis/rule_catalog.json (for trends)
 
-Environment overrides: `MODEL_PATH`, `PREPROCESSOR_PATH`, `FEATURE_NAMES_PATH`, `OPTIMAL_THRESHOLD`, `PATTERN_OUTPUT_DIR`.
+Environment overrides: `MODEL_PATH`, `PREPROCESSOR_PATH`, `FEATURE_NAMES_PATH`, `OPTIMAL_THRESHOLD`.
 
 ## Example requests
 

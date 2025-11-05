@@ -54,7 +54,7 @@ This document provides a structured index for each notebook in the General folde
 
 4. **Missing Values Analysis**
    - Comprehensive missing values analysis with helper functions
-   - Missing values pattern visualizations
+   - Missing value visualizations
    - Management strategies for each column type
 
 5. **Data Type Optimization**
@@ -236,14 +236,14 @@ This document provides a structured index for each notebook in the General folde
 
 4. **Temporal Analysis Visualizations**
    - Crime trends over time with adaptive time resolution
-   - Seasonal patterns and temporal trends analysis
+   - Seasonal trend analysis
    - Monthly and yearly distribution visualizations
    - Export to `crime_trends_over_time.png` or `crime_by_month.png`
 
-5. **Hourly and Daily Pattern Analysis**
+5. **Hourly and Daily Temporal Analysis**
    - Crime distribution by hour with peak identification
-   - Day-hour heatmaps for spatio-temporal patterns
-   - Weekday patterns and temporal clustering
+   - Day-hour heatmaps for spatio-temporal insights
+   - Weekday trends and temporal clustering
    - Export to `crime_by_hour.png` and `crime_heatmap_day_hour.png`
 
 6. **Interactive Spatial Visualizations**

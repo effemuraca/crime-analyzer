@@ -4,9 +4,8 @@ A streamlined crime analysis platform focused on tourist safety risk prediction.
 
 ## Features
 
-- Tourist Safety Prediction API: FastAPI service that predicts crime risk for tourists using a Logistic Regression model with lightweight explanations and contextual trends
+- Tourist Safety Prediction API: FastAPI service that predicts crime risk for tourists using a Logistic Regression model with lightweight explanations
 - Machine Learning Pipeline: End-to-end workflow including data preprocessing, feature engineering, model training, and evaluation
-- Pattern Analysis: Rule-based insights enriching predictions with neighborhood and temporal trends
 - Notebooks and Outputs: Reproducible notebooks and exported artifacts for development and validation
 
 ## Repository Structure
@@ -18,7 +17,6 @@ crime-analyzer/
 │       ├── app.py                  # FastAPI application
 │       ├── docker-compose.yml      # Docker configuration (exposes :8000)
 │       ├── Dockerfile              # Container definition
-│       ├── pattern_insights.py     # Pattern insights module (uses JupyterOutputs)
 │       ├── requirements.txt        # Python dependencies
 │       └── README.md               # Tourist API documentation
 ├── Data/                           # Raw data (optional/local)
@@ -32,7 +30,6 @@ crime-analyzer/
 │   ├── Classification (Modeling)/
 │   ├── Classification (Preprocessing)/
 │   ├── Classification (Tuning)/
-│   ├── PatternAnalysis/
 │   ├── VisualizationPreprocessing/
 │   ├── DataIntegrated/
 │   ├── FeatureEngineered/
@@ -44,9 +41,7 @@ crime-analyzer/
 ├── Notebooks/                      # Jupyter notebooks
 │   ├── Classification/
 │   ├── General/
-│   └── PatternAnalysis/
 ├── tools/
-│   └── pattern_analysis_profile.py
 └── README.md
 ```
 
@@ -91,7 +86,6 @@ Send POST requests to `/api/v1/predict` with incident context to receive:
 - Risk classification (HIGH_RISK/LOW_RISK)
 - Confidence score (positive-class probability)
 - Top contributing features (best-effort for linear models)
-- Neighborhood/time-bucket trend insights
 
 Example (PowerShell, single record):
 
@@ -141,7 +135,6 @@ Use notebooks in `Notebooks/` for:
 
 - Data exploration and preprocessing
 - Model training and evaluation
-- Pattern discovery and validation
 - Generating analysis figures and reports
 
 ## Project Components
@@ -150,7 +143,6 @@ Use notebooks in `Notebooks/` for:
 
 - Preprocessing: Data cleaning, feature engineering, encoding
 - Classification: Logistic Regression model for risk prediction
-- Pattern Analysis: Association rule mining for crime correlations (used for trend enrichment)
 
 ### Data Sources
 

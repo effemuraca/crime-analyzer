@@ -622,30 +622,10 @@ def _get_top_features_single(df_row: pd.DataFrame, top_n: int = 5) -> List[Dict[
 # legacy predict endpoints removed; use /api/v1/predict
 
 
-# --- Unified v1 endpoint with trends enrichment ---
-try:
-    from . import pattern_insights as pin
-except Exception:
-    import importlib
-    pin = importlib.import_module("pattern_insights")
+"""Unified v1 endpoint (predictions with lightweight explanations)."""
 
 
-def _context_rules_for_input(df_row: pd.Series, top_k: int = 5) -> Dict[str, Any]:
-    boro = str(df_row.get("BORO_NM", "")).strip().upper()
-    tbucket = str(df_row.get("TIME_BUCKET", "")).strip().upper()
-    out = {"neighborhood": [], "time_bucket": []}
-    try:
-        if boro:
-            res_b = pin.get_borough_top_k(boro, top_k)
-            if res_b.get("available"):
-                out["neighborhood"] = res_b.get("rules", [])
-        if tbucket:
-            res_t = pin.get_time_bucket_top_k(tbucket, top_k)
-            if res_t.get("available"):
-                out["time_bucket"] = res_t.get("rules", [])
-    except Exception:
-        pass
-    return out
+# Pattern analysis insights removed from API responses.
 
 
 @app.post("/api/v1/predict")
@@ -667,20 +647,19 @@ def v1_predict(payload: Union[InputRecord, BatchRequest]):
         raise HTTPException(status_code=500, detail=f"Prediction failed: {e}")
 
     outputs = []
-    for i, row in df.iterrows():
-        prob = float(probas[i])
-        lbl = int(labels[i])
+    for idx in range(len(df)):
+        row = df.iloc[idx]
+        prob = float(probas[idx])
+        lbl = int(labels[idx])
         label_name = "HIGH_RISK" if lbl == 1 else "LOW_RISK"
         # Top features for this record
-        top_feats = _get_top_features_single(df.iloc[[i]], top_n=5)
-        # Trends for borough/time bucket
-        trends = _context_rules_for_input(row, top_k=5)
+        # Slice as a single-row DataFrame for consistent column handling
+        top_feats = _get_top_features_single(df.iloc[idx:idx+1], top_n=5)
         outputs.append({
             "label": label_name,
             "confidence": prob,
             "threshold": OPTIMAL_THRESHOLD,
             "explanations": {"top_features": top_feats},
-            "trends": trends,
         })
 
     return outputs[0] if len(outputs) == 1 else {"count": len(outputs), "results": outputs}
@@ -700,10 +679,6 @@ def root():
             "confidence": "float in [0,1] for positive class",
             "threshold": "decision threshold used",
             "explanations": {"top_features": "array of {feature, contribution}"},
-            "trends": {
-                "neighborhood": "top rules for BORO_NM",
-                "time_bucket": "top rules for TIME_BUCKET",
-            },
         },
         "example_single": {
             "BORO_NM": "BROOKLYN",
